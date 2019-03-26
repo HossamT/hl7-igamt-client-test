@@ -1,0 +1,31 @@
+@import '../../../../../assets/variables';
+
+.toolbar {
+  background-color: $nist_primary;
+}
+
+.toolbar-name {
+  font-weight: 700;
+  font-size: 25px;
+  color: white !important;
+}
+
+.nav-links-bar {
+  background-color: $nist_secondary;
+}
+
+li {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+li a {
+  color: $nist_primary;
+}
+
+.nav-item:hover {
+  background-color: $nist_terciary;
+  cursor: pointer;
+}
