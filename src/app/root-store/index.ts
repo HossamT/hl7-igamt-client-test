@@ -7,9 +7,9 @@ import {
 import { environment } from '../../environments/environment';
 
 export interface IRouteState {
-  layout: any;
+  layout?: any;
 }
 
-export const reducers: ActionReducerMap<RouteState> = {
+export const reducers: ActionReducerMap<IRouteState> = {
 
 };
