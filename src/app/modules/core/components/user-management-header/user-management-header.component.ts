@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserManagementHeaderComponent implements OnInit {
 
+  loggedIn: boolean;
+  username: boolean;
+
   constructor() { }
 
   ngOnInit() {
