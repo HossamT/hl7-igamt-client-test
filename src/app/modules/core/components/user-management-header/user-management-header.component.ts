@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserManagementHeaderComponent implements OnInit {
 
+  // PULL R
   loggedIn: boolean;
   username: boolean;
 
