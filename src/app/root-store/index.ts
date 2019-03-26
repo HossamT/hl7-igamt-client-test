@@ -6,8 +6,8 @@ import {
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 
-export interface RouteState {
-
+export interface IRouteState {
+  layout: any;
 }
 
 export const reducers: ActionReducerMap<RouteState> = {
