@@ -15,6 +15,10 @@
     ],
     "jsdoc-format": [
       false
+    ],
+    "max-classes-per-file": [
+      false,
+      1
     ]
   }
 }
