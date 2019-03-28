@@ -5,11 +5,12 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
+import * as fromAuth from './authentication/authentication.reducer';
 
 export interface IRouteState {
-  layout?: any;
+  auth: fromAuth.IState;
 }
 
 export const reducers: ActionReducerMap<IRouteState> = {
-
+  auth: fromAuth.reducer,
 };

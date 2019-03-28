@@ -1,4 +1,12 @@
-$nist_primary : #021a4c;
-$nist_secondary : #F3C60D;
-$nist_terciary : #ffec9d;
-$nist_blue_light : #739fff;
+// Colors
+$nist_dark_blue : #021a4c;
+$nist_light_blue : #739fff;
+$nist_dark_yellow : #F3C60D;
+$nist_light_yellow : #ffec9d;
+
+// Sizes
+$header_toolname_height : 61;
+$header_links_height : 46;
+$header_height : $header_links_height + $header_toolname_height;
+
+$workspace_min_height : 700px;
