@@ -1,21 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {CardModule} from 'primeng/card';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import {RegisterFormComponent} from './register-form/register-form.component';
 
 @NgModule({
-  declarations: [LoginFormComponent],
+  declarations: [LoginFormComponent, RegisterFormComponent],
   imports: [
     CommonModule,
     RouterModule,
+    CardModule,
+    FormsModule,
   ],
   exports: [
     CommonModule,
     RouterModule,
     LoginFormComponent,
+    RegisterFormComponent,
+    NgbModule,
   ],
 })
 export class SharedModule { }

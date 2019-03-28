@@ -5,18 +5,40 @@
       <span class="toolname-abbrv">(IGAMT)</span>
     </a>
   </div>
-</nav>
 <nav class="nav-links-bar navbar navbar-expand-sm fixed-top">
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a class="nav-link" href="#">Link 1</a>
+      <a class="nav-link" href="#">HOME</a>
     </li>
+    <li class="nav-item" ngbDropdown>
+      <a class="nav-link" href="#" ngbDropdownToggle>IG Documents</a>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Create new IG document</button>
+        <button ngbDropdownItem>User's IG Documents</button>
+        <button ngbDropdownItem>Published IG Documents</button>
+        <button ngbDropdownItem>All IG Documents</button>
+      </div>
+    </li>
+    <li class="nav-item" ngbDropdown>
+      <a class="nav-link" href="#" ngbDropdownToggle>Data Type Libraries</a>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Create Data Types Library</button>
+        <button ngbDropdownItem>User's Data Types Libraries</button>
+        <button ngbDropdownItem>Published Data Types Libraries</button>
+        <button ngbDropdownItem>Data Types Evolution</button>
+      </div>
+    </li>
+
     <li class="nav-item">
-      <a class="nav-link" href="#">Link 2</a>
+      <a class="nav-link" href="#">Shared Elements</a>
     </li>
+
     <li class="nav-item">
-      <a class="nav-link" href="#">Link 3</a>
+        <a class="nav-link" href="#">
+          Configuration</a>
     </li>
+
+
   </ul>
   <app-user-management-header></app-user-management-header>
 </nav>
