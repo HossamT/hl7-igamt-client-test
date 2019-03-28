@@ -1,38 +1,40 @@
 <nav class="navbar navbar-dark toolbar">
-  <a class="navbar-brand toolbar-name">IGAMT - Implementation Guide Authoring and Management Tool</a>
+  <a class="navbar-brand toolbar-name">IGAMT - Implementation Guide Authoring and Management Tool </a>
 </nav>
 <nav class="nav-links-bar navbar navbar-expand-sm" style="padding: 0px 20px 0px 0px; justify-content: space-between;">
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a class="nav-link" href="#">Link 1</a>
+      <a class="nav-link" href="#">HOME</a>
     </li>
+    <li class="nav-item" ngbDropdown>
+      <a class="nav-link" href="#" ngbDropdownToggle>IG Documents</a>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Create new IG document</button>
+        <button ngbDropdownItem>User's IG Documents</button>
+        <button ngbDropdownItem>Published IG Documents</button>
+        <button ngbDropdownItem>All IG Documents</button>
+      </div>
+    </li>
+    <li class="nav-item" ngbDropdown>
+      <a class="nav-link" href="#" ngbDropdownToggle>Data Type Libraries</a>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Create Data Types Library</button>
+        <button ngbDropdownItem>User's Data Types Libraries</button>
+        <button ngbDropdownItem>Published Data Types Libraries</button>
+        <button ngbDropdownItem>Data Types Evolution</button>
+      </div>
+    </li>
+
     <li class="nav-item">
-      <a class="nav-link" href="#">Link 2</a>
+      <a class="nav-link" href="#">Shared Elements</a>
     </li>
+
     <li class="nav-item">
-      <a class="nav-link" href="#">Link 3</a>
+        <a class="nav-link" href="#">
+          Configuration</a>
     </li>
+
+
   </ul>
   <app-user-management-header></app-user-management-header>
 </nav>
-
-
-<!-- <ul class="navbar-nav">
-  <li class="nav-item active">
-    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#">Disabled</a>
-  </li>
-</ul>
-<ul class="navbar-nav float-right">
-  <li>
-    <a class="nav-link disabled" href="#">Login</a>
-  </li>
-  <li class="float-right">
-    <a class="nav-link disabled" href="#">Register</a>
-  </li>
-</ul> -->
