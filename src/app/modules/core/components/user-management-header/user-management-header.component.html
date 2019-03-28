@@ -1,4 +1,4 @@
-<ul *ngIf="!loggedIn" class="navbar-nav">
+<ul *ngIf="!(loggedIn | async)" class="navbar-nav">
   <li class="nav-item" routerLink="login" routerLinkActive="active">
     <a class="nav-link">Login</a>
   </li>
@@ -6,6 +6,6 @@
     <a class="nav-link" href="#">Register</a>
   </li>
 </ul>
-<div *ngIf="loggedIn && username" class="user-management-text">
-  <span> {{username}} </span>
+<div *ngIf="(loggedIn | async) && (username | async)" class="username-label">
+  <i class="fa fa-user"></i><span> {{username | async}} </span>
 </div>
