@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {RegistrationObject} from '../../core/models/user/registration-object.class';
 
 @Component({
   selector: 'app-register-form',
@@ -25,10 +27,44 @@ export class RegisterFormComponent implements OnInit {
     'can be redistributed and/or modified freely provided that any derivative ' +
     'works bear some notice that they are derived from it, and any modified' +
     ' versions bear some notice that they have been modified.';
+  signedConfidentialityAgreement = false;
+  user: RegistrationObject = new RegistrationObject(null, null , null, null, false);
 
-  constructor() {}
+   registrationForm: FormGroup;
+   confirmPassword: string;
+
+  constructor() {
+    this.registrationForm = new FormGroup({
+      fullname: new FormControl(this.user.fullname, [Validators.required] ),
+      email: new FormControl(this.user.email, [Validators.email, Validators.required]),
+      username: new FormControl(this.user.username, [Validators.required,  Validators.minLength(4)]),
+      password : new FormControl(this.user.password, [Validators.required,  Validators.minLength(4)]),
+      confirmPasswordForm : new FormControl(
+        this.confirmPassword,
+        [this.passwordValidator()] ),
+      signedConfidentialityAgreement: new FormControl(
+        this.user.signedConfidentialityAgreement,
+        [this.signedConfidentialityAgreementValidator()] ),
+    });
+  }
 
   ngOnInit() {
+  }
+
+  passwordValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+
+      return control.value !== this.user.password ? {notMatch: {value: control.value}} : null;
+    };
+  }
+
+  signedConfidentialityAgreementValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+
+      console.log(control.value);
+      return !control.value ? {unsigned: {value: control.value}} : null;
+    };
+
   }
 
 }

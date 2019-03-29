@@ -1,38 +1,38 @@
+<form [formGroup] = "registrationForm" class="p-grid p-dir-col p-justify-center">
+  <div class="form-group p-col">
+    <label for="fullname" class="form-label-lg">Name</label>
+    <input type="text" class="form-control" id="fullname" name="fullname" id="fullname" placeholder="Full Name" formControlName="fullname" [(ngModel)] = "user.fullname"   required placeholder="Enter Name">
+  </div>
 
-  <form>
-    <div class="form-group">
-      <label for="email">Name</label>
-      <input type="email" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter Name">
-    </div>
+  <div class="form-group p-col">
+    <label for="email" class="form-label-lg">Email</label>
+    <input type="email" class="form-control" formControlName="email"  [(ngModel)] = "user.email"  required  id="email" aria-describedby="emailHelp" placeholder="Enter Email">
+  </div>
 
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email">
-    </div>
+  <div class="form-group p-col">
+    <label for="username" class="form-label-lg">Username</label>
+    <input type="email" class="form-control" id="username"  formControlName="username" required [(ngModel)]= "user.username"  aria-describedby="emailHelp" placeholder="Enter Username">
+  </div>
 
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="email" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter Username">
-    </div>
+  <div class="form-group p-col">
+    <label for="password" class="form-label-lg">Password</label>
+    <input type="password" class="form-control" id="password" name="password" formControlName="password" required [(ngModel)]="user.password"  placeholder="Enter Password">
+  </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="Enter Password">
-    </div>
+  <div class="form-group p-col">
+    <label for="confirmPassword" class="form-label-lg">Confirm Password</label>
+    <input type="password" class="form-control" id="confirmPassword"  [(ngModel)]="confirmPassword" formControlName="confirmPasswordForm" placeholder="confirm Password">
+  </div>
+  <div class="form-group p-col p-grid">
+    <label for="notice" class="form-label-lg"> Notice to Applicant Regarding IGAMT Terms of Use</label>
+    <div class="form-control user-notice" disabled aria-label="With textarea" id="notice">{{notice}}</div>
+    <p-checkbox name="signedConfidentialityAgreement"  binary="true" [(ngModel)]="user.signedConfidentialityAgreement" [formControl]="registrationForm.controls['signedConfidentialityAgreement']"></p-checkbox>
+    <span>I have read the Notice to Applicant and Accept the Terms of Use for the IGAMT</span>
+  </div>
 
-    <div class="form-group">
-      <label for="confirmPassword">Confirm Password</label>
-      <input type="password" class="form-control" id="confirmPassword" placeholder="confirm Password">
-    </div>
-    <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
+  <div class="p-grid p-col p-justify-end">
+    <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.valid">Submit Application</button>
+  </div>
 
-    <div class="form-group">
-
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+</form>
 

@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { CardModule } from 'primeng/card';
+import {RegistrationEffects} from '../../root-store/registration/registration.effects';
 import { SharedModule } from '../shared/shared.module';
 import { AuthenticationEffects } from './../../root-store/authentication/authentication.effects';
 import { FooterComponent } from './components/footer/footer.component';
@@ -28,7 +29,7 @@ import { UserManagementHeaderComponent } from './components/user-management-head
     HttpClientModule,
     CardModule,
     StoreModule,
-    EffectsModule.forFeature([AuthenticationEffects]),
+    EffectsModule.forFeature([AuthenticationEffects, RegistrationEffects]),
   ],
   providers: [
     AuthenticationEffects,
