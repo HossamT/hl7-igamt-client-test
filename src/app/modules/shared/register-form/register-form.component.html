@@ -31,7 +31,7 @@
   </div>
 
   <div class="p-grid p-col p-justify-end">
-    <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.valid">Submit Application</button>
+    <button type="submit" class="btn btn-primary" (click)="submit()" [disabled]="!registrationForm.valid">Submit Application</button>
   </div>
 
 </form>

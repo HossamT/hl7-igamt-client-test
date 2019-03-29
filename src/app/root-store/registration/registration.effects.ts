@@ -4,17 +4,21 @@ import {of} from 'rxjs';
 import {catchError, concatMap, map} from 'rxjs/operators';
 import {User} from '../../modules/core/models/user/user.class';
 import {RegistrationService} from '../../modules/core/services/registration.service';
+import * as fromMessages from '../../root-store/page-messages/page-messages.actions';
 import {
   RegistrationActionTypes,
   RegistrationFailure,
   RegistrationRequest,
   RegistrationSuccess,
 } from './registration.actions';
+import {Message, MessageType} from "../../modules/core/models/message/message.class";
 
 @Injectable()
 export class RegistrationEffects {
 
-  constructor(private actions$: Actions, private registrationService: RegistrationService) {}
+  constructor(private actions$: Actions, private registrationService: RegistrationService) {
+
+  }
   @Effect()
   registration$ = this.actions$.pipe(
     ofType(RegistrationActionTypes.RegistrationRequest),
@@ -30,4 +34,19 @@ export class RegistrationEffects {
     }),
   );
 
+  @Effect()
+  registrationSuccess$ = this.actions$.pipe(
+    ofType(RegistrationActionTypes.RegistrationSuccess),
+    concatMap( (action: RegistrationSuccess) => {
+      return of(new fromMessages.AddMessages([new Message(MessageType.SUCCESS, ' Registration Success', action.payload)]));
+    }),
+  );
+
+  @Effect()
+  registrationFailure$ = this.actions$.pipe(
+    ofType(RegistrationActionTypes.RegistrationFailure),
+    concatMap( (action: RegistrationFailure) => {
+      return of(new fromMessages.AddMessages([new Message(MessageType.FAILED, ' Registration Failure', action.payload)]));
+    }),
+  );
 }

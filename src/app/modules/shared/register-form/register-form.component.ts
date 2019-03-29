@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {RegistrationObject} from '../../core/models/user/registration-object.class';
 
@@ -32,6 +32,7 @@ export class RegisterFormComponent implements OnInit {
 
    registrationForm: FormGroup;
    confirmPassword: string;
+   @Output() submitEvent = new EventEmitter<RegistrationObject>();
 
   constructor() {
     this.registrationForm = new FormGroup({
@@ -65,6 +66,10 @@ export class RegisterFormComponent implements OnInit {
       return !control.value ? {unsigned: {value: control.value}} : null;
     };
 
+  }
+  submit() {
+    console.log(this.user);
+    this.submitEvent.emit(this.user);
   }
 
 }

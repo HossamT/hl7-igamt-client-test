@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import {RegistrationRequest} from '../../../../root-store/registration/registration.actions';
+import {RegistrationObject} from '../../models/user/registration-object.class';
 
 @Component({
   selector: 'app-register',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store<any>) { }
 
   ngOnInit() {
   }
 
+  onSubmitApplication($event: RegistrationObject) {
+    console.log($event);
+    this.store.dispatch(new RegistrationRequest($event));
+  }
 }

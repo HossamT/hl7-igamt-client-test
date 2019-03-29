@@ -1,7 +1,7 @@
 <div class="page-container-nopad p-grid p-justify-center">
   <div class="p-col-align-center p-col-8">
     <p-card header="Register">
-      <app-register-form></app-register-form>
+      <app-register-form (submitEvent)= "onSubmitApplication($event)"></app-register-form>
     </p-card>
   </div>
 </div>
