@@ -3,9 +3,14 @@
     <a class="nav-link">Login</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Register</a>
+    <a class="nav-link" [routerLink]="['/register']">Register</a>
   </li>
 </ul>
-<div *ngIf="(loggedIn | async) && (username | async)" class="username-label">
-  <i class="fa fa-user"></i><span> {{username | async}} </span>
-</div>
+<ul *ngIf="(loggedIn | async) && (username | async)" class="navbar-nav username-label">
+  <li class="nav-item" ngbDropdown>
+    <span class="nav-link" href="#" ngbDropdownToggle><i class="fa fa-user"></i> {{username | async}} </span>
+    <div ngbDropdownMenu>
+      <button ngbDropdownItem (click)="logout()"><i class="fa fa-sign-out"></i> Logout</button>
+    </div>
+  </li>
+</ul>

@@ -18,7 +18,7 @@ export class AuthenticationEffects {
   login$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.LoginPageRequest),
     concatMap((action: LoginPageRequest) => {
-      return this.authService.login(action.payload.usename, action.payload.password).pipe(
+      return this.authService.login(action.payload.username, action.payload.password).pipe(
         map((user: User) => {
           return new LoginSuccess(user);
         }),

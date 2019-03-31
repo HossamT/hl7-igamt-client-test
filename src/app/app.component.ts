@@ -10,7 +10,7 @@ import { BootstrapCheckAuthStatus, LoginPageRequest, UpdateAuthStatus } from './
 export class AppComponent implements OnInit {
   title = 'igamt-client';
 
-  constructor(private store: Store<{ count: number }>) {
+  constructor(private store: Store<any>) {
   }
 
   ngOnInit(): void {

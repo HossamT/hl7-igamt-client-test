@@ -16,12 +16,14 @@ export class BootstrapCheckAuthStatus implements Action {
   readonly type = AuthenticationActionTypes.BootstrapCheckAuthStatus;
 }
 
+export class LoginRequest {
+  username: string;
+  password: string;
+}
+
 export class LoginPageRequest implements Action {
   readonly type = AuthenticationActionTypes.LoginPageRequest;
-  constructor(readonly payload: {
-    usename: string,
-    password: string,
-  }) { }
+  constructor(readonly payload: LoginRequest) { }
 }
 
 export class LoginSuccess implements Action {

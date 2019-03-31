@@ -1,3 +1,4 @@
+import { AuthenticatedGuard, NotAuthenticatedGuard } from './services/auth-guard.guard';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -12,6 +13,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserManagementHeaderComponent } from './components/user-management-header/user-management-header.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { UserManagementHeaderComponent } from './components/user-management-head
     LoginComponent,
     RegisterComponent,
     UserManagementHeaderComponent,
+    HomeComponent,
   ],
   imports: [
     CommonModule,
@@ -32,6 +35,8 @@ import { UserManagementHeaderComponent } from './components/user-management-head
   ],
   providers: [
     AuthenticationEffects,
+    AuthenticatedGuard,
+    NotAuthenticatedGuard,
   ],
   exports: [
     HeaderComponent,
@@ -39,6 +44,7 @@ import { UserManagementHeaderComponent } from './components/user-management-head
     LoginComponent,
     RegisterComponent,
     SharedModule,
+    HomeComponent,
   ],
 })
 export class CoreModule { }
