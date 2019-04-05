@@ -1,13 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import * as fromMessages from '../../root-store/page-messages/page-messages.actions';
 import { User } from './../../modules/core/models/user/user.class';
 import { AuthenticationService } from './../../modules/core/services/authentication.service';
 
 import { EMPTY, of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap, tap } from 'rxjs/operators';
+import {Message, MessageType} from '../../modules/core/models/message/message.class';
 import {
-  AuthenticationActions, AuthenticationActionTypes, BootstrapCheckAuthStatus,
-  LoginFailure, LoginPageRequest, LoginSuccess, LogoutSuccess, UpdateAuthStatus,
+  AuthenticationActions,
+  AuthenticationActionTypes,
+  BootstrapCheckAuthStatus,
+  LoginFailure,
+  LoginPageRequest,
+  LoginSuccess,
+  LogoutSuccess,
+  ResetPasswordRequest,
+  ResetPasswordRequestFailure,
+  ResetPasswordRequestSuccess,
+  UpdateAuthStatus,
+  UpdatePasswordRequest, UpdatePasswordRequestFailure,
+  UpdatePasswordRequestSuccess,
+  ValidateToKen,
+  ValidateToKenFailure,
+  ValidateToKenSuccess,
 } from './authentication.actions';
 
 @Injectable()
@@ -100,6 +116,68 @@ export class AuthenticationEffects {
         status: false,
         errors: [...action.errors],
       });
+    }),
+  );
+  // | ResetPasswordRequest | ResetPasswordRequestSuccess | ResetPasswordRequestFailure
+  // | ValidateToKen |ValidateToKenSuccess | ValidateToKenFailure;
+
+  @Effect()
+  resetPasswordRequest$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.ResetPasswordRequest),
+    concatMap((action: ResetPasswordRequest) => {
+      return this.authService.requestChangePassword(action.payload).pipe(
+        map((message: string) => {
+          return new ResetPasswordRequestSuccess(message);
+        }),
+        catchError((error: string) => {
+          return of(new ResetPasswordRequestFailure(error));
+        }),
+      );
+    }),
+  );
+
+  @Effect()
+  resetPasswordRequestFailure$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.ResetPasswordRequestFailure),
+    map((action: ResetPasswordRequestFailure) => {
+      return new fromMessages.AddMessages(new Message(MessageType.FAILED, action.payload, action.payload));
+    }),
+  );
+  @Effect()
+  resetPasswordRequestSuccess$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.ResetPasswordRequestSuccess),
+    map((action: ResetPasswordRequestSuccess) => {
+      return new fromMessages.AddMessages(new Message(MessageType.SUCCESS, action.payload, action.payload));
+    }),
+  );
+
+  @Effect()
+  updatePassword$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.UpdatePasswordRequest),
+    concatMap((action: UpdatePasswordRequest) => {
+      return this.authService.updatePassword(action.payload.token , action.payload.password).pipe(
+        map((message: string) => {
+          return new UpdatePasswordRequestSuccess(message);
+        }),
+        catchError((error: string) => {
+          return of(new UpdatePasswordRequestFailure(error));
+        }),
+      );
+    }),
+  );
+
+  @Effect()
+  updatePasswordRequestFailure$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.UpdatePasswordRequestFailure),
+    map((action: UpdatePasswordRequestFailure) => {
+      return new fromMessages.AddMessages(new Message(MessageType.FAILED, action.payload, action.payload));
+    }),
+  );
+  @Effect()
+  updatePasswordRequestSuccess$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.UpdatePasswordRequestSuccess),
+    map((action: UpdatePasswordRequestSuccess) => {
+      return new fromMessages.AddMessages(new Message(MessageType.SUCCESS, action.payload, action.payload));
     }),
   );
 

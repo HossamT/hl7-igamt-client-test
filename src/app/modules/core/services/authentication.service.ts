@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import {catchError, concatMap, map, mergeMap} from 'rxjs/operators';
 import { User } from '../models/user/user.class';
 
 @Injectable({
@@ -19,6 +19,57 @@ export class AuthenticationService {
       mergeMap((response) => {
         switch (response.status) {
           case 'SUCCESS': return of(response.data);
+          case 'FAILED': return throwError(response.text);
+          default: return throwError('Unexpected error happened');
+        }
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const errorMessage = err.error ? err.error.text ? err.error.text : err.message : err.message;
+        return throwError(errorMessage);
+      }),
+    );
+  }
+
+  requestChangePassword(email: string): Observable<string> {
+    console.log(email);
+    console.log('email');
+
+    return this.http.post<AuthenticationResponse>('api/password/reset', email).pipe(
+      concatMap((response) => {
+        switch (response.status) {
+          case 'SUCCESS': return of(response.text);
+          case 'FAILED': return throwError(response.text);
+          default: return throwError('Unexpected error happened');
+        }
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const errorMessage = err.error ? err.error.text ? err.error.text : err.message : err.message;
+        return throwError(errorMessage);
+      }),
+    );
+  }
+
+  validateToken(token):  Observable<any> {
+    return this.http.post<AuthenticationResponse>('api/password/validatetoken', token).pipe(
+      concatMap((response) => {
+        switch (response.status) {
+          case 'SUCCESS': return of(response.text);
+          case 'FAILED': return throwError(response.text);
+          default: return throwError('Unexpected error happened');
+        }
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const errorMessage = err.error ? err.error.text ? err.error.text : err.message : err.message;
+        return throwError(errorMessage);
+      }),
+    );
+  }
+
+  updatePassword(token: string, password: string) {
+    return this.http.post<AuthenticationResponse>('api/password/reset/confirm', {token, password}).pipe(
+      concatMap((response) => {
+        switch (response.status) {
+          case 'SUCCESS': return of(response.text);
           case 'FAILED': return throwError(response.text);
           default: return throwError('Unexpected error happened');
         }
@@ -51,7 +102,7 @@ export class AuthenticationService {
 export class AuthenticationResponse {
   status: AuthenticationResponseStatus;
   text: string;
-  data: User;
+  data: any;
 }
 
 export type AuthenticationResponseStatus = 'SUCCESS' | 'WARNING' | 'INFO' | 'FAILED';

@@ -23,7 +23,7 @@ export class RegistrationSuccess implements Action {
 
 export class RegistrationFailure implements Action {
   readonly type = RegistrationActionTypes.RegistrationFailure;
-  constructor(readonly payload: string[]) {
+  constructor(readonly payload: string) {
   }
 }
 

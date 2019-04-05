@@ -7,7 +7,7 @@ export interface IState {
 }
 
 export const initialState: IState = {
-  messages: null,
+  messages: [],
 };
 
 export function reducer(state = initialState, action: PageMessagesActions): IState {
@@ -18,8 +18,10 @@ export function reducer(state = initialState, action: PageMessagesActions): ISta
       return {
       ... state, messages: [],
       };
-    case PageMessagesActionTypes.AddMessages: return {
-      ...state, messages: [...state.messages, ...action.payload],
+    case PageMessagesActionTypes.AddMessages:
+      console.log("Updating state");
+      return {
+      ...state, messages: [...state.messages, action.payload],
     };
 
     default:

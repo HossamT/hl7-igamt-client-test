@@ -1,0 +1,30 @@
+<form [formGroup] = "registrationForm" class="p-grid p-dir-col p-justify-center" novalidate>
+
+  <form-input type="text" [id]="'fullname'" [name]="'fullname'" formControlName="fullname"  [(_value)] = "user.fullname" [required]="true" [placeholder]="'Enter Name'" [label]="'fullname*'"></form-input>
+
+
+  <form-input type="text" [id]="'email'" [name]="'email'" formControlName="email" [(_value)] = "user.email" [required]="true" [placeholder]="'Enter Email'" [label]="'email'"></form-input>
+
+
+  <form-input type="text" [id]="'username'" [name]="'username'" formControlName="username"  [(_value)] = "user.username" [required]="true" [placeholder]="'Enter Username'" [label]="'username*'"></form-input>
+
+  <form-input type="password" [id]="'password'" [name]="'password'" formControlName="password"  [(_value)] = "user.password" [required]="true" [placeholder]="'Enter Password'" [label]="'password*'"></form-input>
+
+  <form-input type="password" [id]="'confirmpassword'" [name]="'confirmpassword'" formControlName="confirm"  [(_value)] = "confirmPassword" [required]="true" [placeholder]="'Confirm Password'" [label]="'Confirm password*'"></form-input>
+
+
+
+
+  <div class="form-group p-col p-grid">
+    <label for="notice" class="form-label-lg"> Notice to Applicant Regarding IGAMT Terms of Use</label>
+    <div class="form-control user-notice" disabled aria-label="With textarea" id="notice">{{notice}}</div>
+    <p-checkbox name="signedConfidentialityAgreement"  binary="true" [(ngModel)]="user.signedConfidentialityAgreement" [formControl]="registrationForm.controls['signedConfidentialityAgreement']"></p-checkbox>
+    <span>I have read the Notice to Applicant and Accept the Terms of Use for the IGAMT</span>
+  </div>
+
+  <div class="p-grid p-col p-justify-end">
+    <button type="submit" class="btn btn-primary" (click)="submit()" [disabled]="false">Submit Application</button>
+  </div>
+
+</form>
+

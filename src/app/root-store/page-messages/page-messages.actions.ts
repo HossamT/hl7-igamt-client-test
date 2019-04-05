@@ -10,7 +10,7 @@ export enum PageMessagesActionTypes {
 
 export class AddMessages implements Action {
   readonly type = PageMessagesActionTypes.AddMessages;
-  constructor(readonly payload: Message[]) {}
+  constructor(readonly payload: Message) {}
 
 }
 export class DeleteMessages implements Action {

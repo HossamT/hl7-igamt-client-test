@@ -18,10 +18,15 @@ import { reducers } from './root-store';
     AppRoutingModule,
     EffectsModule.forRoot([]),
     StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     CoreModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

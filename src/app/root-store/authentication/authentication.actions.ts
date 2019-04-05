@@ -10,6 +10,15 @@ export enum AuthenticationActionTypes {
   LogoutRequest = '[Logout Button Authentication] Logout Request',
   LogoutSuccess = '[Authentication] Logout Success',
   UpdateAuthStatus = '[Authentication] Update Authentication Status',
+  ResetPasswordRequest = '[ResetPasswordRequest Page] Reset Password Request',
+  ResetPasswordRequestSuccess = '[ResetPasswordRequest Page] Reset Password Request Sucess',
+  ResetPasswordRequestFailure = '[ResetPasswordRequest Page] Reset Password Request Failure',
+  ValidateToKen = '[New Password Page] Validate Authentication Token Request',
+  ValidateToKenSuccess = '[New Password Page] Validate Authentication Token Request Success',
+  ValidateToKenFailure = '[New Password Page] Validate Authentication Token Request Failure',
+  UpdatePasswordRequest = '[New Password Page] Update Password  Request',
+  UpdatePasswordRequestSuccess = '[New Password Page] Update Password  Request Success',
+  UpdatePasswordRequestFailure = '[New Password Page] Update Password  Request Success',
 }
 
 export class BootstrapCheckAuthStatus implements Action {
@@ -56,6 +65,56 @@ export class UpdateAuthStatus implements Action {
   }) { }
 }
 
-export type AuthenticationActions = BootstrapCheckAuthStatus | LoginPageRequest |
-  LoginSuccess | LoginFailure | UnauthorizedRequest |
-  LogoutRequest | LogoutSuccess | UpdateAuthStatus;
+export class ResetPasswordRequest  implements Action {
+  readonly type = AuthenticationActionTypes.ResetPasswordRequest;
+  constructor(readonly payload: string) { }
+}
+
+export class ResetPasswordRequestSuccess  implements Action {
+  readonly type = AuthenticationActionTypes.ResetPasswordRequestSuccess;
+  constructor(readonly payload: string) { }
+}
+
+export class ResetPasswordRequestFailure  implements Action {
+  readonly type = AuthenticationActionTypes.ResetPasswordRequestFailure;
+  constructor(readonly payload: string) { }
+}
+
+export class ValidateToKen implements Action {
+  readonly type = AuthenticationActionTypes.ValidateToKen;
+  constructor(readonly payload: string) { }
+
+}
+export class ValidateToKenFailure implements Action {
+  readonly type = AuthenticationActionTypes.ValidateToKenFailure;
+}
+
+export class ValidateToKenSuccess implements Action {
+  readonly type = AuthenticationActionTypes.ValidateToKenSuccess;
+}
+
+export class UpdatePasswordRequest implements Action {
+  readonly type = AuthenticationActionTypes.UpdatePasswordRequest;
+  constructor(readonly payload: {
+    token: string,
+    password: string,
+  }) {}
+}
+
+export class UpdatePasswordRequestSuccess implements Action {
+  readonly type = AuthenticationActionTypes.UpdatePasswordRequestSuccess;
+  constructor(readonly payload: string) { }
+
+}
+
+export class UpdatePasswordRequestFailure implements Action {
+  readonly type = AuthenticationActionTypes.UpdatePasswordRequestFailure;
+  constructor(readonly payload: string) { }
+}
+
+export type AuthenticationActions = BootstrapCheckAuthStatus | LoginPageRequest
+  | LoginSuccess | LoginFailure | UnauthorizedRequest
+  | LogoutRequest | LogoutSuccess | UpdateAuthStatus
+  | ResetPasswordRequest | ResetPasswordRequestSuccess | ResetPasswordRequestFailure
+  | ValidateToKen | ValidateToKenSuccess | ValidateToKenFailure
+  | UpdatePasswordRequest | UpdatePasswordRequestSuccess | UpdatePasswordRequestFailure;

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {of} from 'rxjs';
 import {catchError, concatMap, map} from 'rxjs/operators';
+import {Message, MessageType} from '../../modules/core/models/message/message.class';
 import {User} from '../../modules/core/models/user/user.class';
 import {RegistrationService} from '../../modules/core/services/registration.service';
 import * as fromMessages from '../../root-store/page-messages/page-messages.actions';
@@ -11,7 +12,6 @@ import {
   RegistrationRequest,
   RegistrationSuccess,
 } from './registration.actions';
-import {Message, MessageType} from "../../modules/core/models/message/message.class";
 
 @Injectable()
 export class RegistrationEffects {
@@ -28,7 +28,7 @@ export class RegistrationEffects {
           return new RegistrationSuccess(user);
         }),
         catchError((error: string) => {
-          return of(new RegistrationFailure([error]));
+          return of(new RegistrationFailure(error));
         }),
       );
     }),
@@ -37,16 +37,16 @@ export class RegistrationEffects {
   @Effect()
   registrationSuccess$ = this.actions$.pipe(
     ofType(RegistrationActionTypes.RegistrationSuccess),
-    concatMap( (action: RegistrationSuccess) => {
-      return of(new fromMessages.AddMessages([new Message(MessageType.SUCCESS, ' Registration Success', action.payload)]));
+    map( (action: RegistrationSuccess) => {
+      return new fromMessages.AddMessages(new Message(MessageType.SUCCESS, ' Registration Success', action.payload));
     }),
   );
 
   @Effect()
   registrationFailure$ = this.actions$.pipe(
     ofType(RegistrationActionTypes.RegistrationFailure),
-    concatMap( (action: RegistrationFailure) => {
-      return of(new fromMessages.AddMessages([new Message(MessageType.FAILED, ' Registration Failure', action.payload)]));
+    map( (action: RegistrationFailure) => {
+      return new fromMessages.AddMessages(new Message(MessageType.FAILED, action.payload, null));
     }),
   );
 }
