@@ -10,13 +10,24 @@
       <li class="nav-item" routerLink="home" routerLinkActive="active">
         <a class="nav-link">Home</a>
       </li>
-      <li class="nav-item" ngbDropdown>
+      <li class="nav-item" [ngClass]="{'active': isIG | async }" ngbDropdown>
         <span class="nav-link" ngbDropdownToggle>IG Documents</span>
         <div ngbDropdownMenu>
-          <button ngbDropdownItem>Create new IG document</button>
-          <button ngbDropdownItem>User's IG Documents</button>
-          <button ngbDropdownItem>Published IG Documents</button>
-          <button ngbDropdownItem>All IG Documents</button>
+          <button ngbDropdownItem>
+            Create new IG document
+          </button>
+          <button [routerLink]="[ '/ig/list']" [queryParams]="{ type : 'USER' }" routerLinkActive="active-dropdown"
+            ngbDropdownItem>
+            User's IG Documents
+          </button>
+          <button [routerLink]="[ '/ig/list']" [queryParams]="{ type : 'PUBLISHED' }" routerLinkActive="active-dropdown"
+            ngbDropdownItem>
+            Published IG Documents
+          </button>
+          <button *ngIf="isAdmin | async" [routerLink]="[ '/ig/list']" [queryParams]="{ type : 'ALL' }"
+            routerLinkActive="active-dropdown" ngbDropdownItem>
+            All IG Documents
+          </button>
         </div>
       </li>
       <li class="nav-item" ngbDropdown>
@@ -35,10 +46,13 @@
 
       <li class="nav-item">
         <a class="nav-link" href="#">
-          Configuration</a>
+          Configuration
+        </a>
       </li>
-
-
     </ul>
     <app-user-management-header></app-user-management-header>
   </nav>
+</nav>
+<div class="nav-progress-bar fixed-top" *ngIf="isLoading | async">
+  <p-progressBar mode="indeterminate"></p-progressBar>
+</div>

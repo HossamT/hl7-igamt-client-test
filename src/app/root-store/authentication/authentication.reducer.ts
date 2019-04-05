@@ -1,4 +1,4 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { User } from './../../modules/core/models/user/user.class';
 import { AuthenticationActions, AuthenticationActionTypes } from './authentication.actions';
 import { IState } from './authentication.reducer';
@@ -66,6 +66,13 @@ export const selectAuthorities = createSelector(
     }
   },
 );
+export const selectIsAdmin = createSelector(
+  selectAuthorities,
+  (authorities: string[]) => {
+    return authorities.indexOf('ADMIN') !== -1;
+  },
+);
+
 export const selectAuthErrorList = createSelector(
   selectAuth,
   (state: IState) => {

@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
+import { catchError, concatMap, flatMap, map, mergeMap, tap } from 'rxjs/operators';
+import { Message, MessageType } from 'src/app/modules/core/models/message/message.class';
+import { MessageService } from 'src/app/modules/core/services/message.service';
+import { TurnOffLoader, TurnOnLoader } from '../loader/loader.actions';
 import { User } from './../../modules/core/models/user/user.class';
 import { AuthenticationService } from './../../modules/core/services/authentication.service';
-
-import { EMPTY, of } from 'rxjs';
-import { catchError, concatMap, map, mergeMap, tap } from 'rxjs/operators';
+import { ClearAll } from './../page-messages/page-messages.actions';
 import {
   AuthenticationActions, AuthenticationActionTypes, BootstrapCheckAuthStatus,
   LoginFailure, LoginPageRequest, LoginSuccess, LogoutSuccess, UpdateAuthStatus,
@@ -18,6 +22,9 @@ export class AuthenticationEffects {
   login$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.LoginPageRequest),
     concatMap((action: LoginPageRequest) => {
+      this.store.dispatch(new TurnOnLoader({
+        blockUI: false,
+      }));
       return this.authService.login(action.payload.username, action.payload.password).pipe(
         map((user: User) => {
           return new LoginSuccess(user);
@@ -81,12 +88,16 @@ export class AuthenticationEffects {
   @Effect()
   updateStatusSuccess$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.LoginSuccess),
-    map((action: LoginSuccess) => {
-      return new UpdateAuthStatus({
-        userInfo: action.payload,
-        status: true,
-        errors: [],
-      });
+    flatMap((action: LoginSuccess) => {
+      return [
+        new UpdateAuthStatus({
+          userInfo: action.payload,
+          status: true,
+          errors: [],
+        }),
+        new ClearAll(),
+        new TurnOffLoader(),
+      ];
     }),
   );
 
@@ -94,15 +105,26 @@ export class AuthenticationEffects {
   @Effect()
   updateStatusFailure$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.LoginFailure),
-    map((action: LoginFailure) => {
-      return new UpdateAuthStatus({
-        userInfo: null,
-        status: false,
-        errors: [...action.errors],
-      });
+    flatMap((action: LoginFailure) => {
+      return [
+        new UpdateAuthStatus({
+          userInfo: null,
+          status: false,
+          errors: [...action.errors],
+        }),
+        new ClearAll(),
+        new TurnOffLoader(),
+        ...action.errors
+          .map((error) => this.message.messageToAction(new Message(MessageType.FAILED, error, null))),
+      ];
     }),
   );
 
-  constructor(private actions$: Actions<AuthenticationActions>, private authService: AuthenticationService) { }
+  constructor(
+    private actions$: Actions<AuthenticationActions>,
+    private store: Store<any>,
+    private authService: AuthenticationService,
+    private message: MessageService,
+  ) { }
 
 }
