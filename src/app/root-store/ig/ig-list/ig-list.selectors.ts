@@ -1,53 +1,10 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import { ISortOptions } from 'src/app/modules/shared/models/sort.class';
-import { IgListItem } from '../../modules/ig/models/ig/ig-list-item.class';
-import { IgListActions, IgListActionTypes, IgListLoad } from './ig-list.actions';
+import { IgListLoad } from 'src/app/root-store/ig/ig-list/ig-list.actions';
+import { IgListItem } from './../../../modules/ig/models/ig/ig-list-item.class';
+import { selectIgList } from './../ig.reducer';
+import { igListItemAdapter, IState } from './ig-list.reducer';
 
-export interface IState extends EntityState<IgListItem> {
-  viewType: IgListLoad;
-  sortOptions: ISortOptions;
-}
-
-export const initialState: IState = {
-  entities: {},
-  ids: [],
-  viewType: 'USER',
-  sortOptions: {
-    property: 'title',
-    ascending: true,
-  },
-};
-
-const igListItemAdapter = createEntityAdapter<IgListItem>();
-
-export function reducer(state = initialState, action: IgListActions): IState {
-  switch (action.type) {
-
-    case IgListActionTypes.UpdateIgList:
-      return igListItemAdapter.upsertMany(action.payload, state);
-
-    case IgListActionTypes.DeleteIgListItemSuccess:
-      return igListItemAdapter.removeOne(action.id, state);
-
-    case IgListActionTypes.SelectIgListViewType:
-      return {
-        ...state,
-        viewType: action.viewType,
-      };
-
-    case IgListActionTypes.SelectIgListSortOption:
-      return {
-        ...state,
-        sortOptions: action.sortOption,
-      };
-
-    default:
-      return state;
-  }
-}
-
-export const selectIgList = createFeatureSelector<IState>('igList');
 export const {
   selectAll,
   selectEntities,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegisterFormComponent } from './register-form.component';
+import { IgEditTitlebarComponent } from './ig-edit-titlebar.component';
 
-describe('RegisterFormComponent', () => {
-  let component: RegisterFormComponent;
-  let fixture: ComponentFixture<RegisterFormComponent>;
+describe('IgEditTitlebarComponent', () => {
+  let component: IgEditTitlebarComponent;
+  let fixture: ComponentFixture<IgEditTitlebarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterFormComponent ],
+      declarations: [ IgEditTitlebarComponent ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegisterFormComponent);
+    fixture = TestBed.createComponent(IgEditTitlebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

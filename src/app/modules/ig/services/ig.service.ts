@@ -13,4 +13,8 @@ export class IgService {
   cloneIg(id: string): Observable<Message<string>> {
     return this.http.get<any>('/api/igdocuments/' + id + '/clone');
   }
+
+  getIg(id: string): Observable<IgDocument> {
+    return this.http.get<any>('/api/igdocuments/' + id);
+  }
 }

@@ -1,22 +1,14 @@
-@import '../../assets/variables';
+@import '../../../../../assets/variables';
 
 .wrapper {
   @extend %blue-bg;
   display: grid;
   grid-gap: 2px;
   grid-template-columns: [sidebar] 3fr [content-panel] 9fr [content-panel-end];
-  grid-template-rows: [row-titlebar] 50px [row-toolbar] 40px [row-content] auto;
+  grid-template-rows: [row-titlebar] 50px [row-toolbar] 55px [row-content] auto;
   overflow: hidden;
   color: #444;
   height: 100%;
-}
-
-.title-text {
-  margin: 0;
-}
-
-.toolbar-button {
-  margin-right: 5px;
 }
 
 .titlebar {
@@ -48,24 +40,6 @@
   overflow: hidden;
 }
 
-.sidebar-header {
-  grid-column: sidebar-content;
-  grid-row: sidebar-header;
-  background-color: #fafafa;
-  display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.sidebar-content {
-  grid-column: sidebar-content;
-  grid-row: sidebar-content-row;
-  background-color: #fafafa;
-  overflow: scroll;
-  padding: 10px;
-}
-
 .content {
   grid-column: content-panel ;
   grid-row: row-content;
@@ -87,7 +61,7 @@
   display: flex;
 }
 
-.toc-filter {
+.toc-title {
   grid-column: toolbar-sidebar;
   grid-row: row-titlebar;
   background-color: #fafafa;
@@ -104,7 +78,7 @@
   flex-direction: row;
   justify-content: flex-end;
   background-color: white;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .content-container {
@@ -114,72 +88,3 @@
   overflow: scroll;
   background-color: white;
 }
-
-
-
-// .layout {
-//   @extend %blue-bg;
-//   display: grid;
-//   grid-gap: 2px;
-//   grid-template-columns: 3fr 9fr;
-//   grid-template-rows: 50px 40px 50px auto;
-//   grid-template-areas:  'head head'
-//                         'sidebar toolbar'
-//                         'sidebar content-head'
-//                         'sidebar content';
-//   color: #444;
-//   height: 100%;
-// }
-
-// .sec {
-//   background-color : white;
-// }
-// .head {
-//   grid-area: head;
-// }
-
-// .toolbar {
-//   grid-area: toolbar;
-// }
-
-// .sidebar-head {
-//   grid-area: sidebar-head;
-// }
-
-// .content-head {
-//   grid-area: content-head;
-// }
-
-// .sidebar {
-//   @extend %blue-bg;
-//   display: grid;
-//   grid-gap: 2px;
-//   grid-template-columns: auto;
-//   grid-template-rows: 40px 50px auto;
-//   grid-template-areas:  'sidebar-title'
-//                         'sidebar-filter'
-//                         'sidebar-content';
-//   color: #444;
-//   height: 100%;
-// }
-
-// .sidebar-title {
-//   grid-area: sidebar-title;
-// }
-
-// .sidebar-filter {
-//   grid-area: sidebar-filter;
-// }
-
-// .sidebar-content {
-//   grid-area: sidebar-content;
-//   max-height: 100%;
-//   overflow: scroll;
-// }
-
-// .content {
-//   grid-area: content;
-//   max-height: 100%;
-//   overflow: scroll;
-// }
-
