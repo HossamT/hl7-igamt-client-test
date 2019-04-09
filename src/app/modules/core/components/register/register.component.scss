@@ -1,0 +1,10 @@
+.register-layout {
+  display: grid;
+  grid-template-columns: 1fr [register-content] 5fr 1fr;
+  grid-template-rows: 50px auto 50px;
+}
+
+.register-card {
+  grid-column: register-content;
+  grid-row: 2;
+}

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import {RegistrationObject} from '../../modules/core/models/user/registration-object.class';
 import {User} from '../../modules/core/models/user/user.class';
+import {AuthenticationResponse} from '../../modules/core/services/authentication.service';
 
 export enum RegistrationActionTypes {
   RegistrationRequest = '[Registration Page] Registration Request',
@@ -17,7 +18,7 @@ export class RegistrationRequest implements Action {
 
 export class RegistrationSuccess implements Action {
   readonly type = RegistrationActionTypes.RegistrationSuccess;
-  constructor(readonly payload: User) {
+  constructor(readonly payload: AuthenticationResponse) {
   }
 }
 

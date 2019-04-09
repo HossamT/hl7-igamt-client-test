@@ -1,4 +1,4 @@
-import { reducer, initialState } from './page-messages.reducer';
+import { initialState, reducer } from './page-messages.reducer';
 
 describe('PageMessages Reducer', () => {
   describe('an unknown action', () => {

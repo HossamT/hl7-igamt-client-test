@@ -8,19 +8,17 @@ html {
 }
 
 body {
+  @extend %blue-bg;
   height: 100%;
   width: 100%;
   font-family: Verdana,Geneva,sans-serif !important;
-  background: #1488CC;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #2B32B2, #1488CC);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #2B32B2, #1488CC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 %page-container {
   height: 100%;
   width: 100%;
-  min-height: $workspace_min_height;
 }
+
 .page-container-pad {
   @extend %page-container;
   padding-top: $header_height;
@@ -29,9 +27,48 @@ body {
 .page-container-nopad {
   @extend %page-container;
 }
+
+.no-pad {
+  padding: 0;
+}
+
+.fill_height {
+  height: 100%;
+}
+
 .form-label-lg{
   font-weight: 700;
 }
-.form-error-text{
-  color: red;
+
+// APPLICATION MAIN LAYOUT
+.page-container-layout {
+  display: grid;
+  grid-template-columns: [page-content] 1fr;
+  grid-template-rows: [content-row] auto;
+}
+
+.page-content {
+  grid-column: page-content;
+  grid-row: content-row;
+  overflow: hidden;
+}
+
+//-----
+
+//----- primeng
+.ui-progressbar {
+  height: 7px !important;
+  background-color: #ffd400 !important;
+}
+
+.ui-progressbar-value {
+  background-color: #be1600 !important;
+}
+
+.no-focus:focus {
+  outline: none;
+}
+
+.border-gray {
+  border: 1px solid #c1c1c1;
 }

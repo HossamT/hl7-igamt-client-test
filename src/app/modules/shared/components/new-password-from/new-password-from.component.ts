@@ -14,7 +14,7 @@ export class NewPasswordFromComponent implements OnInit {
 
   constructor() {
     this.resetForm = new FormGroup({
-      password : new FormControl(this.password, [Validators.required,  Validators.minLength(4)]),
+      password : new FormControl(this.password, [Validators.required,  Validators.minLength(6)]),
       confirmPasswordForm : new FormControl(
         this.confirmPassword,
         [this.passwordValidator()])});

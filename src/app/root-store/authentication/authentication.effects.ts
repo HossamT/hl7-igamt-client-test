@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import * as fromMessages from '../../root-store/page-messages/page-messages.actions';
+import { Store } from '@ngrx/store';
+import {EMPTY, of, throwError} from 'rxjs';
+import {_throw} from 'rxjs-compat/observable/throw';
+import { catchError, concatMap, flatMap, map, mergeMap, tap } from 'rxjs/operators';
+import { Message, MessageType } from 'src/app/modules/core/models/message/message.class';
+import { MessageService } from 'src/app/modules/core/services/message.service';
+import { TurnOffLoader, TurnOnLoader } from '../loader/loader.actions';
 import { User } from './../../modules/core/models/user/user.class';
 import { AuthenticationService } from './../../modules/core/services/authentication.service';
-
-import { EMPTY, of } from 'rxjs';
-import { catchError, concatMap, map, mergeMap, tap } from 'rxjs/operators';
-import {Message, MessageType} from '../../modules/core/models/message/message.class';
+import { ClearAll } from './../page-messages/page-messages.actions';
 import {
   AuthenticationActions,
   AuthenticationActionTypes,
@@ -21,9 +24,6 @@ import {
   UpdateAuthStatus,
   UpdatePasswordRequest, UpdatePasswordRequestFailure,
   UpdatePasswordRequestSuccess,
-  ValidateToKen,
-  ValidateToKenFailure,
-  ValidateToKenSuccess,
 } from './authentication.actions';
 
 @Injectable()
@@ -34,7 +34,10 @@ export class AuthenticationEffects {
   login$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.LoginPageRequest),
     concatMap((action: LoginPageRequest) => {
-      return this.authService.login(action.payload.usename, action.payload.password).pipe(
+      this.store.dispatch(new TurnOnLoader({
+        blockUI: false,
+      }));
+      return this.authService.login(action.payload.username, action.payload.password).pipe(
         map((user: User) => {
           return new LoginSuccess(user);
         }),
@@ -97,12 +100,16 @@ export class AuthenticationEffects {
   @Effect()
   updateStatusSuccess$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.LoginSuccess),
-    map((action: LoginSuccess) => {
-      return new UpdateAuthStatus({
-        userInfo: action.payload,
-        status: true,
-        errors: [],
-      });
+    flatMap((action: LoginSuccess) => {
+      return [
+        new UpdateAuthStatus({
+          userInfo: action.payload,
+          status: true,
+          errors: [],
+        }),
+        new ClearAll(),
+        new TurnOffLoader(),
+      ];
     }),
   );
 
@@ -110,21 +117,27 @@ export class AuthenticationEffects {
   @Effect()
   updateStatusFailure$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.LoginFailure),
-    map((action: LoginFailure) => {
-      return new UpdateAuthStatus({
-        userInfo: null,
-        status: false,
-        errors: [...action.errors],
-      });
+    flatMap((action: LoginFailure) => {
+      return [
+        new UpdateAuthStatus({
+          userInfo: null,
+          status: false,
+          errors: [...action.errors],
+        }),
+        new ClearAll(),
+        new TurnOffLoader(),
+        ...action.errors
+          .map((error) => this.message.messageToAction(new Message(MessageType.FAILED, error, null))),
+      ];
     }),
   );
-  // | ResetPasswordRequest | ResetPasswordRequestSuccess | ResetPasswordRequestFailure
-  // | ValidateToKen |ValidateToKenSuccess | ValidateToKenFailure;
-
   @Effect()
   resetPasswordRequest$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.ResetPasswordRequest),
     concatMap((action: ResetPasswordRequest) => {
+      this.store.dispatch(new TurnOnLoader({
+        blockUI: true,
+      }));
       return this.authService.requestChangePassword(action.payload).pipe(
         map((message: string) => {
           return new ResetPasswordRequestSuccess(message);
@@ -139,15 +152,23 @@ export class AuthenticationEffects {
   @Effect()
   resetPasswordRequestFailure$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.ResetPasswordRequestFailure),
-    map((action: ResetPasswordRequestFailure) => {
-      return new fromMessages.AddMessages(new Message(MessageType.FAILED, action.payload, action.payload));
+    flatMap((action: ResetPasswordRequestFailure) => {
+      return [
+        new ClearAll(),
+        new TurnOffLoader(),
+        this.message.messageToAction(new Message(MessageType.FAILED, action.payload, action.payload)),
+      ];
     }),
   );
   @Effect()
   resetPasswordRequestSuccess$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.ResetPasswordRequestSuccess),
-    map((action: ResetPasswordRequestSuccess) => {
-      return new fromMessages.AddMessages(new Message(MessageType.SUCCESS, action.payload, action.payload));
+    flatMap((action: ResetPasswordRequestSuccess) => {
+      return [
+        new ClearAll(),
+        new TurnOffLoader(),
+        this.message.messageToAction(new Message(MessageType.SUCCESS, action.payload, action.payload)),
+      ];
     }),
   );
 
@@ -155,6 +176,9 @@ export class AuthenticationEffects {
   updatePassword$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.UpdatePasswordRequest),
     concatMap((action: UpdatePasswordRequest) => {
+      this.store.dispatch(new TurnOnLoader({
+        blockUI: true,
+      }));
       return this.authService.updatePassword(action.payload.token , action.payload.password).pipe(
         map((message: string) => {
           return new UpdatePasswordRequestSuccess(message);
@@ -169,18 +193,31 @@ export class AuthenticationEffects {
   @Effect()
   updatePasswordRequestFailure$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.UpdatePasswordRequestFailure),
-    map((action: UpdatePasswordRequestFailure) => {
-      return new fromMessages.AddMessages(new Message(MessageType.FAILED, action.payload, action.payload));
+    flatMap((action: UpdatePasswordRequestFailure) => {
+      return [
+        new ClearAll(),
+        new TurnOffLoader(),
+        this.message.messageToAction(new Message(MessageType.FAILED, action.payload, action.payload)),
+      ];
     }),
   );
   @Effect()
   updatePasswordRequestSuccess$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.UpdatePasswordRequestSuccess),
-    map((action: UpdatePasswordRequestSuccess) => {
-      return new fromMessages.AddMessages(new Message(MessageType.SUCCESS, action.payload, action.payload));
+    flatMap((action: UpdatePasswordRequestSuccess) => {
+      return [
+        new ClearAll(),
+        new TurnOffLoader(),
+        this.message.messageToAction(new Message(MessageType.SUCCESS, action.payload, action.payload)),
+      ];
     }),
   );
 
-  constructor(private actions$: Actions<AuthenticationActions>, private authService: AuthenticationService) { }
+  constructor(
+    private actions$: Actions<AuthenticationActions>,
+    private store: Store<any>,
+    private authService: AuthenticationService,
+    private message: MessageService,
+  ) { }
 
 }

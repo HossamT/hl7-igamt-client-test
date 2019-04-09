@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {
   UpdatePasswordRequest,
 } from '../../../../root-store/authentication/authentication.actions';
-import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-new-password',

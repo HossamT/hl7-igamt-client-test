@@ -1,38 +1,41 @@
-export class Message {
-  constructor(status: MessageType, text: string, data: any) {
-    this._status = status;
-    this._text = text;
-    this._data = data;
-  }
-  private _status: MessageType;
-  private _text: string;
-  private _data: any;
+import { TemplateRef } from '@angular/core';
+import { Guid } from 'guid-typescript';
 
-  get status(): MessageType {
-    return this._status;
-  }
+export interface IMessage<T> {
+  readonly status: MessageType;
+  readonly text: string;
+  readonly data: T;
+}
 
-  set status(value: MessageType) {
-    this._status = value;
-  }
+export class Message<T = any> implements IMessage<T> {
+  constructor(readonly status: MessageType, readonly text: string, readonly data: T) { }
+}
 
-  get text(): string {
-    return this._text;
+export class UserMessage<T = any> {
+  readonly id: string;
+
+  constructor(readonly status: MessageType, readonly message: string, readonly data?: T, readonly options?: IUserMessageOptions) {
+    this.id = Guid.create().toString();
   }
 
-  set text(value: string) {
-    this._text = value;
-  }
-
-  get data(): any {
-    return this._data;
-  }
-
-  set data(value: any) {
-    this._data = value;
+  static fromMessage<E = any>(message: Message<E>, options?: IUserMessageOptions) {
+    return new UserMessage<E>(message.status, message.text, message.data, options);
   }
 }
-export enum MessageType {
-  SUCCESS, WARNING, INFO, FAILED,
 
+export interface IUserMessageOptions {
+  closable?: boolean;
+  timeout?: number;
+  template?: TemplateRef<any>;
+}
+
+export class DefaultUserMessageOptions {
+  constructor(readonly options: IUserMessageOptions) { }
+}
+
+export enum MessageType {
+  SUCCESS = 'SUCCESS',
+  WARNING = 'WARNING',
+  INFO = 'INFO',
+  FAILED = 'FAILED',
 }

@@ -1,0 +1,42 @@
+@import '../../../../../assets/variables';
+
+.entity-badge-dark {
+  color: white;
+  border: 1px solid #e3e3e3;
+}
+
+.entity-badge-ig {
+  background-color: $ig_color;
+}
+
+.entity-badge-group {
+  background-color: $group_color;
+}
+
+.entity-badge-segment {
+  background-color: $segment_color;
+}
+
+.entity-badge-field {
+  background-color: $field_color;
+}
+
+.entity-badge-component {
+  background-color: $component_color;
+}
+
+.entity-badge-subcomponent {
+  background-color: $subcomponent_color;
+}
+
+.entity-badge-datatype {
+  background-color: $datatype_color;
+}
+
+.entity-badge-valueset {
+  background-color: $valueset_color;
+}
+
+.entity-badge-conformance-profile {
+  background-color: $comformance_profile_color;
+}

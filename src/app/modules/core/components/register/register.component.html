@@ -1,7 +1,8 @@
-<div class="page-container-nopad p-grid p-justify-center">
-  <div class="p-col-align-center p-col-8">
+<div class="register-layout">
+  <div class="register-card">
     <p-card header="Register">
-      <app-register-form (submitEvent)= "onSubmitApplication($event)"></app-register-form>
+      <app-alerts-container></app-alerts-container>
+      <app-register-form (submitEvent)="onSubmitApplication($event)"></app-register-form>
     </p-card>
   </div>
 </div>

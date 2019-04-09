@@ -1,26 +1,27 @@
 import { Action } from '@ngrx/store';
-import {Message} from '../../modules/core/models/message/message.class';
+import { UserMessage } from '../../modules/core/models/message/message.class';
 
 export enum PageMessagesActionTypes {
-  AddMessages = '[PageMessages] Add Messages',
-  DeleteMessage = '[PageMessages] Delete Messages',
+  AddMessage = '[PageMessages] Add Message',
+  DeleteMessage = '[PageMessages] Delete Message',
   ClearAll = '[PageMessages] Clear All',
-
 }
 
-export class AddMessages implements Action {
-  readonly type = PageMessagesActionTypes.AddMessages;
-  constructor(readonly payload: Message) {}
-
+// [PageMessages] Add Messages, dispatched to add alert messages
+export class AddMessage implements Action {
+  readonly type = PageMessagesActionTypes.AddMessage;
+  constructor(readonly payload: UserMessage) { }
 }
-export class DeleteMessages implements Action {
+
+// [PageMessages] Delete Messages, dispatched to delete alert messages
+export class DeleteMessage implements Action {
   readonly type = PageMessagesActionTypes.DeleteMessage;
-  constructor(readonly payload: number) {}
-
+  constructor(readonly id: string) { }
 }
+
+// [PageMessages] Clear All, Dispatched to clear all alerts
 export class ClearAll implements Action {
   readonly type = PageMessagesActionTypes.ClearAll;
-
 }
 
-export type PageMessagesActions = AddMessages | DeleteMessages |ClearAll ;
+export type PageMessagesActions = AddMessage | DeleteMessage | ClearAll;

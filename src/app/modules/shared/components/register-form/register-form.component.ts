@@ -38,8 +38,8 @@ export class RegisterFormComponent implements OnInit {
     this.registrationForm = new FormGroup({
       fullname: new FormControl(this.user.fullname, [Validators.required] ),
       email: new FormControl(this.user.email, [Validators.email, Validators.required]),
-      username: new FormControl(this.user.username, [Validators.required,  Validators.minLength(4)]),
-      password : new FormControl(this.user.password, [Validators.required,  Validators.minLength(4)]),
+      username: new FormControl(this.user.username, [Validators.required,  Validators.minLength(6)]),
+      password : new FormControl(this.user.password, [Validators.required,  Validators.minLength(6)]),
       confirm : new FormControl(
         this.confirmPassword,
         [this.passwordValidator()]),
