@@ -13,7 +13,7 @@
       <li class="nav-item" [ngClass]="{'active': isIG | async }" ngbDropdown>
         <span class="nav-link" ngbDropdownToggle>IG Documents</span>
         <div ngbDropdownMenu>
-          <button ngbDropdownItem>
+          <button ngbDropdownItem [routerLink]="[ '/ig/create']" routerLinkActive="active-dropdown">
             Create new IG document
           </button>
           <button [routerLink]="[ '/ig/list']" [queryParams]="{ type : 'USER' }" routerLinkActive="active-dropdown"

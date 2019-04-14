@@ -1,0 +1,42 @@
+
+.create-ig-versions{
+  display: grid;
+  align-content: center;
+  justify-content: center;
+}
+
+.create-ig-layout{
+  display: grid;
+  background-color: #f7f7f7;
+  padding: 10px;
+  grid-template-areas:  'alerts'
+  'metadata'
+  'messages'
+  'submit';
+  overflow: scroll;
+  height: 100%;
+}
+
+.metadata {
+  grid-area: metadata;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.alerts {
+  grid-area: alerts;
+}
+.submit {
+  grid-area: submit;
+  height: 100px;
+  display: grid;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+}
+.messages {
+  grid-area: messages;
+  overflow: scroll;
+  max-height: 450px;
+}
+

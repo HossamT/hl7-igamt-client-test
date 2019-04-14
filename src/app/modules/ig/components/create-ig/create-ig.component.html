@@ -1,0 +1,21 @@
+<div>
+  <form [formGroup] = "creationForm" class="create-ig-layout">
+
+    <div class="alerts">
+      <app-alerts-container></app-alerts-container>
+    </div>
+    <div class="metadata">
+      <form-input [type]="'text'" [id]="'title'" [name]="'title'" formControlName="title" [(_value)]="model.metadata.title" [required]="true" [placeholder]="'IG Document Title'" [label]="'IG Document Title*'"></form-input>
+    </div>
+
+  <div class="messages">
+    <app-select-messages [table]="table$ | async "  [hl7Versions]=" hl7Version$ | async" (selected)="getVersion($event)" (messages)="setSelected($event)"></app-select-messages>
+  </div>
+
+    <div class="submit">
+      <button type="submit" class="btn btn-primary" (click)="submit()" [disabled]=" creationForm.invalid || !model.msgEvts.length">Create IG</button>
+    </div>
+
+  </form>
+</div>
+

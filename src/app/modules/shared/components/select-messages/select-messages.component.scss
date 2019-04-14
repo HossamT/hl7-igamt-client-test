@@ -1,0 +1,13 @@
+.select-message-container {
+  display: grid;
+  grid-template-areas: 'loaded selected';
+  grid-gap: 20px;
+}
+
+
+.selected {
+  grid-area: selected;
+}
+.loaded {
+  grid-area: loaded;
+}

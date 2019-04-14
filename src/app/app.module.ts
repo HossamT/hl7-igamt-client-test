@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { LayoutTestComponent } from './layout-test/layout-test.component';
 import { CoreModule } from './modules/core/core.module';
 import { reducers } from './root-store';
+import {ConfigEffects} from './root-store/config/config.effects';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { reducers } from './root-store';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([ConfigEffects]),
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

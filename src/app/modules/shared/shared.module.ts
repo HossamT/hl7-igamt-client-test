@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
+import {ExtendedModule} from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
@@ -7,7 +8,8 @@ import { NgbAlert, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastyModule } from 'ng2-toasty';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
-import { CheckboxModule } from 'primeng/primeng';
+import {CheckboxModule, RadioButtonModule} from 'primeng/primeng';
+import {TableModule} from 'primeng/table';
 import {DefaultUserMessageOptions} from '../core/models/message/message.class';
 import { MessageService } from './../core/services/message.service';
 import { AlertsComponent } from './components/alerts/alerts.component';
@@ -19,7 +21,10 @@ import { NewPasswordFromComponent } from './components/new-password-from/new-pas
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { ResetPasswordRequestFormComponent } from './components/reset-password-request-form/reset-password-request-form.component';
 import { ScopeBadgeComponent } from './components/scope-badge/scope-badge.component';
+import { SelectMessagesComponent } from './components/select-messages/select-messages.component';
+import { SelectVersionsComponent } from './components/select-versions/select-versions.component';
 import { FormInputComponent } from './form-input/form-input.component';
+import {ConfigService} from './services/config.service';
 @NgModule({
   declarations: [
     LoginFormComponent,
@@ -32,6 +37,8 @@ import { FormInputComponent } from './form-input/form-input.component';
     ResetPasswordRequestFormComponent,
     NewPasswordFromComponent,
     FormInputComponent,
+    SelectMessagesComponent,
+    SelectVersionsComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +52,9 @@ import { FormInputComponent } from './form-input/form-input.component';
     MatDialogModule,
     DropdownModule,
     ToastyModule.forRoot(),
+    RadioButtonModule,
+    TableModule,
+    ExtendedModule,
   ],
   exports: [
     CommonModule,
@@ -69,6 +79,8 @@ import { FormInputComponent } from './form-input/form-input.component';
     DropdownModule,
     ConfirmDialogComponent,
     FormInputComponent,
+    SelectVersionsComponent,
+    SelectMessagesComponent,
   ],
   entryComponents: [ConfirmDialogComponent],
 })
@@ -77,7 +89,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        MessageService,
+        MessageService, ConfigService,
         {
           provide: DefaultUserMessageOptions,
           useValue: new DefaultUserMessageOptions({

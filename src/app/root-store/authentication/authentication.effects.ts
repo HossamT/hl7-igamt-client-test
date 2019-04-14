@@ -6,6 +6,7 @@ import {_throw} from 'rxjs-compat/observable/throw';
 import { catchError, concatMap, flatMap, map, mergeMap, tap } from 'rxjs/operators';
 import { Message, MessageType } from 'src/app/modules/core/models/message/message.class';
 import { MessageService } from 'src/app/modules/core/services/message.service';
+import {LoadConfig} from '../config/config.actions';
 import { TurnOffLoader, TurnOnLoader } from '../loader/loader.actions';
 import { User } from './../../modules/core/models/user/user.class';
 import { AuthenticationService } from './../../modules/core/services/authentication.service';
@@ -55,12 +56,12 @@ export class AuthenticationEffects {
     mergeMap((action: BootstrapCheckAuthStatus) => {
       return this.authService.checkAuthStatus();
     }),
-    map((user: User) => {
-      return new UpdateAuthStatus({
+    flatMap((user: User) => {
+      return [new UpdateAuthStatus({
         errors: [],
         status: true,
         userInfo: user,
-      });
+      })];
     }),
     catchError((error: string) => {
       return of(new UpdateAuthStatus({
