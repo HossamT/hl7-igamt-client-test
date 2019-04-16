@@ -1,7 +1,9 @@
+@import  '../../../../../assets/variables';
+
 .ig-list-layout {
+  @extend %page-wrapper;
+
   display: grid;
-  background-color: #f7f7f7;
-  padding: 10px;
   grid-template-areas:  'alerts'
                         'topbar'
                         'search-bar'

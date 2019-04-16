@@ -21,3 +21,10 @@ export const selectTitleBar = createSelector(
     };
   },
 );
+
+export const selectViewOnly = createSelector(
+  selectIgDocument,
+  (document: IgDocument): boolean => {
+    return document.domainInfo.scope !== 'USER';
+  },
+);

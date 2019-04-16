@@ -15,8 +15,11 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { NewPasswordComponent } from './components/new-password/new-password.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ResetPasswordRequestComponent } from './components/reset-password-request/reset-password-request.component';
 import { UserManagementHeaderComponent } from './components/user-management-header/user-management-header.component';
+import { NewPasswordResolver } from './resolvers/new-password.resolver';
 import { AuthenticatedGuard, NotAuthenticatedGuard } from './services/auth-guard.guard';
 
 @NgModule({
@@ -26,6 +29,8 @@ import { AuthenticatedGuard, NotAuthenticatedGuard } from './services/auth-guard
     LoginComponent,
     RegisterComponent,
     UserManagementHeaderComponent,
+    ResetPasswordRequestComponent,
+    NewPasswordComponent,
     HomeComponent,
     AlertsContainerComponent,
   ],
@@ -40,7 +45,7 @@ import { AuthenticatedGuard, NotAuthenticatedGuard } from './services/auth-guard
     SharedModule.forRoot(),
   ],
   providers: [
-    AuthenticationEffects,
+    NewPasswordResolver,
     AuthenticatedGuard,
     NotAuthenticatedGuard,
   ],

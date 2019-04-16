@@ -1,14 +1,14 @@
 @import '../../../../../assets/variables';
 
 .wrapper {
-  @extend %blue-bg;
   display: grid;
   grid-gap: 2px;
   grid-template-columns: [sidebar] 3fr [content-panel] 9fr [content-panel-end];
-  grid-template-rows: [row-titlebar] 50px [row-toolbar] 55px [row-content] auto;
+  grid-template-rows: [alerts] minmax(min-content,max-content) [row-titlebar] 50px [row-toolbar] 55px [row-content] auto;
   overflow: hidden;
   color: #444;
   height: 100%;
+  background-color: #d6d6d6e3;
 }
 
 .titlebar {
@@ -23,7 +23,6 @@
 .toolbar {
   grid-column: sidebar / content-panel-end;
   grid-row: row-toolbar;
-  @extend %blue-bg;
   grid-gap: 2px;
   display: grid;
   grid-template-columns: [toolbar-sidebar] 3fr [content-toolbar] 9fr [content-toolbar-end];
@@ -32,7 +31,6 @@
 .sidebar {
   grid-column: sidebar;
   grid-row: row-content;
-  @extend %blue-bg;
   display: grid;
   grid-gap: 2px;
   grid-template-columns: [sidebar-content] auto;
@@ -43,7 +41,6 @@
 .content {
   grid-column: content-panel ;
   grid-row: row-content;
-  @extend %blue-bg;
   display: grid;
   grid-gap: 2px;
   overflow: scroll;

@@ -1,7 +1,7 @@
 .sidebar-header {
   grid-column: sidebar-content;
   grid-row: sidebar-header;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -11,7 +11,7 @@
 .sidebar-content {
   grid-column: sidebar-content;
   grid-row: sidebar-content-row;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
   overflow: scroll;
   padding: 10px;
 }

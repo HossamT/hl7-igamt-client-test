@@ -6,19 +6,15 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ToastyModule } from 'ng2-toasty';
-import { MessageService } from 'primeng/api';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LayoutTestComponent } from './layout-test/layout-test.component';
 import { CoreModule } from './modules/core/core.module';
-import { DefaultUserMessageOptions } from './modules/core/models/message/message.class';
 import { reducers } from './root-store';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutTestComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +22,11 @@ import { reducers } from './root-store';
     AppRoutingModule,
     EffectsModule.forRoot([]),
     StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
+
     StoreRouterConnectingModule.forRoot(),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     CoreModule,
@@ -34,6 +35,6 @@ import { reducers } from './root-store';
   providers: [
   ],
   bootstrap: [AppComponent],
-  exports: [LayoutTestComponent],
+  exports: [],
 })
 export class AppModule { }

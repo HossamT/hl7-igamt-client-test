@@ -1,16 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { MessageType, UserMessage } from 'src/app/modules/core/models/message/message.class';
 import { Notify } from 'src/app/root-store/notification/notification.actions';
+import { DEFAULT_MESSAGE_OPTION } from '../../shared/shared-injection-token';
 import { AddMessage } from './../../../root-store/page-messages/page-messages.actions';
-import { DefaultUserMessageOptions, IUserMessageOptions, Message } from './../models/message/message.class';
+import { IUserMessageOptions, Message } from './../models/message/message.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageService {
 
-  constructor(private defaultOptions: DefaultUserMessageOptions) { }
+  constructor(@Inject(DEFAULT_MESSAGE_OPTION) private defaultOptions: IUserMessageOptions) { }
 
   messageTypeToAlert(status: MessageType): NgbAlertType {
     switch (status) {
@@ -28,7 +29,7 @@ export class MessageService {
   }
 
   private mergeOptions(options: IUserMessageOptions): IUserMessageOptions {
-    return Object.assign(Object.assign({}, this.defaultOptions.options), options);
+    return Object.assign(Object.assign({}, this.defaultOptions), options);
   }
 
   // tslint:disable-next-line: no-identical-functions

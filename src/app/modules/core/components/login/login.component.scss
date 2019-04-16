@@ -3,15 +3,8 @@
 }
 
 .login-layout {
-  display: grid;
-  grid-template-columns: [login-column] 1fr;
-  grid-template-rows: 1fr [login-row] 1fr auto auto
-}
-
-.login-container {
-  grid-row: login-row;
-  grid-column: login-column;
-  flex-direction: row;
   display: flex;
+  height: 100%;
+  align-items: center;
   justify-content: center;
 }

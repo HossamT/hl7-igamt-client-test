@@ -19,5 +19,5 @@
     <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.valid" (click)="submit()"> Login
     </button>
   </div>
-  <p class="text-center"><a href="#" class="btn">Forgot password?</a></p>
+  <p class="text-center"><a class="btn" [routerLink]="['/reset-password']">Forgot password?</a></p>
 </form>

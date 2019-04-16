@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { RegistrationObject } from '../../../core/models/user/registration-object.class';
+import { IRegistration } from 'src/app/modules/core/models/user/registration.class';
+import { passwordValidator } from '../../validators/password-validator';
 
 @Component({
   selector: 'app-register-form',
@@ -27,49 +28,66 @@ export class RegisterFormComponent implements OnInit {
     'can be redistributed and/or modified freely provided that any derivative ' +
     'works bear some notice that they are derived from it, and any modified' +
     ' versions bear some notice that they have been modified.';
-  signedConfidentialityAgreement = false;
-  user: RegistrationObject = new RegistrationObject(null, null, null, null, false);
 
   registrationForm: FormGroup;
-  confirmPassword: string;
-  @Output() submitEvent = new EventEmitter<RegistrationObject>();
+  @Output() submitEvent = new EventEmitter<IRegistration>();
 
   constructor() {
     this.registrationForm = new FormGroup({
-      fullname: new FormControl(this.user.fullname, [Validators.required]),
-      email: new FormControl(this.user.email, [Validators.email, Validators.required]),
-      username: new FormControl(this.user.username, [Validators.required, Validators.minLength(4)]),
-      password: new FormControl(this.user.password, [Validators.required, Validators.minLength(4)]),
-      confirmPasswordForm: new FormControl(
-        this.confirmPassword,
-        [this.passwordValidator()]),
+      fullname: new FormControl(
+        '',
+        [
+          Validators.required,
+        ],
+      ),
+      email: new FormControl(
+        '',
+        [
+          Validators.email,
+          Validators.required,
+        ],
+      ),
+      username: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+        ],
+      ),
+      password: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+        ],
+      ),
+      confirm: new FormControl(
+        '',
+      ),
       signedConfidentialityAgreement: new FormControl(
-        this.user.signedConfidentialityAgreement,
-        [this.signedConfidentialityAgreementValidator()]),
+        false,
+        [
+          this.signedConfidentialityAgreementValidator(),
+        ],
+      ),
     });
+    this.registrationForm.get('confirm').setValidators([Validators.required, passwordValidator(this.registrationForm)]);
   }
 
-  ngOnInit() {
+  refreshConfirmPasswordValidation() {
+    this.registrationForm.get('confirm').updateValueAndValidity();
   }
 
-  passwordValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } => {
-
-      return control.value !== this.user.password ? { notMatch: { value: control.value } } : null;
-    };
+  submit() {
+    this.submitEvent.emit(this.registrationForm.getRawValue());
   }
 
   signedConfidentialityAgreementValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-
-      console.log(control.value);
       return !control.value ? { unsigned: { value: control.value } } : null;
     };
-
-  }
-  submit() {
-    console.log(this.user);
-    this.submitEvent.emit(this.user);
   }
 
+  ngOnInit() {
+  }
 }

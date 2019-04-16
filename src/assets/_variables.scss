@@ -38,7 +38,6 @@ $hl7_scope_color : rgb(253, 150, 150);
 $user_scope_color : rgb(14, 158, 46);
 $preloaded_scope_color : rgb(125, 218, 255);
 
-
 .entity-badge-ig {
   background-color: $ig_color !important;
 }
@@ -73,4 +72,18 @@ $preloaded_scope_color : rgb(125, 218, 255);
 
 .entity-badge-conformance-profile {
   background-color: $comformance_profile_color !important;
+}
+
+// Page Container
+%page-wrapper {
+  background-color: #f7f7f7;
+  padding: 10px;
+  padding-top: 50px;
+  padding-left: 100px;
+  padding-right: 100px;
+  height: 100%;
+}
+
+.page-title {
+  margin-bottom: 50px;
 }

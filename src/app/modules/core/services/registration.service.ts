@@ -1,32 +1,18 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable, of, throwError} from 'rxjs';
-import {catchError, concatMap, mergeMap} from 'rxjs/operators';
-import {RegistrationRequest} from '../../../root-store/registration/registration.actions';
-import {RegistrationObject} from '../models/user/registration-object.class';
-import {User} from '../models/user/user.class';
-import {AuthenticationResponse} from './authentication.service';
+import { Observable } from 'rxjs';
+import { Message } from '../models/message/message.class';
+import { IRegistration } from '../models/user/registration.class';
+import { User } from '../models/user/user.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegistrationService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  register(registrationRequest: RegistrationObject): Observable<User> {
-    return this.http.post<AuthenticationResponse>('api/register', registrationRequest).pipe(
-      concatMap((response) => {
-        switch (response.status) {
-          case 'SUCCESS': return of(response.data);
-          case 'FAILED': return throwError(response.text);
-          default: return throwError('Unexpected error happened');
-        }
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const errorMessage = err.error ? err.error.text ? err.error.text : err.message : err.message;
-        return throwError(errorMessage);
-      }),
-    );
+  register(registrationRequest: IRegistration): Observable<Message<User>> {
+    return this.http.post<Message<User>>('api/register', registrationRequest);
   }
 }

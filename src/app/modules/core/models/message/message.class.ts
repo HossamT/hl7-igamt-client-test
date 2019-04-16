@@ -29,10 +29,6 @@ export interface IUserMessageOptions {
   template?: TemplateRef<any>;
 }
 
-export class DefaultUserMessageOptions {
-  constructor(readonly options: IUserMessageOptions) { }
-}
-
 export enum MessageType {
   SUCCESS = 'SUCCESS',
   WARNING = 'WARNING',
