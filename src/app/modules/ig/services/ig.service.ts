@@ -2,9 +2,9 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, mergeMap} from 'rxjs/operators';
+import {IDocumentCreationWrapper} from '../models/ig/document-creation.interface';
 import {MessageEventTreeNode} from '../models/message-event/message-event.class';
 import {Message, MessageType} from './../../core/models/message/message.class';
-import {IDocumentCreationWrapper} from '../models/ig/document-creation.interface';
 
 @Injectable({
   providedIn: 'root',
