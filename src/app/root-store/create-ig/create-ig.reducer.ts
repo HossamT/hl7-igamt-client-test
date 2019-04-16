@@ -13,14 +13,12 @@ export const initialState: IState = {
 };
 
 export function reducer(state = initialState, action: CreateIgActions): IState {
-  switch (action.type) {
-    case CreateIgActionTypes.LoadMessageEventsSuccess:
-      return {... state, loadedMessageEvents: action.payload };
-    default:
-      return state;
+  if (action.type === CreateIgActionTypes.LoadMessageEventsSuccess) {
+    return {... state, loadedMessageEvents: action.payload };
+  } else {
+    return state;
   }
 }
-
 export const getCreateIgState = createFeatureSelector<IState>('createIg');
 
 export const getLoadedMessageEventsState = createSelector(

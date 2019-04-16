@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import {Store} from '@ngrx/store';
 import {of} from 'rxjs';
-import {catchError, concatMap, flatMap, map, mergeMap} from 'rxjs/operators';
+import {catchError, flatMap, mergeMap} from 'rxjs/operators';
 import {Message, MessageType} from '../../modules/core/models/message/message.class';
 import {MessageService} from '../../modules/core/services/message.service';
 import {MessageEventTreeNode} from '../../modules/ig/models/messageEvent/message-event.class';

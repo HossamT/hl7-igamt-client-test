@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ConfigEffects } from './config.effects';
 
 describe('ConfigEffects', () => {
-  let actions$: Observable<any>;
+  const actions$: Observable<any> = null;
   let effects: ConfigEffects;
 
   beforeEach(() => {

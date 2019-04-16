@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import {EventTreeData, MessageEventTreeNode} from '../../modules/ig/models/messageEvent/message-event.class';
 import {IgCreationWrapper} from '../../modules/ig/models/ig/IgCreation.class';
+import {EventTreeData, MessageEventTreeNode} from '../../modules/ig/models/messageEvent/message-event.class';
 
 export enum CreateIgActionTypes {
   LoadMessageEvents = '[Create IG Page] Load Message Events',
@@ -46,8 +46,6 @@ export class CreateIgSuccess implements Action {
   constructor(readonly payload: string) {
   }
 }
-
-
 
 export type CreateIgActions = LoadMessageEvents| LoadMessageEventsSuccess |
   LoadMessageEventsFailure| CreateIgSuccess|

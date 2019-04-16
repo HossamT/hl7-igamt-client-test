@@ -2,6 +2,7 @@
   display: grid;
   grid-template-areas: 'loaded selected';
   grid-gap: 20px;
+  height: 100%;
 }
 
 
@@ -10,4 +11,5 @@
 }
 .loaded {
   grid-area: loaded;
+
 }

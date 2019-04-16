@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { CreateIgEffects } from './create-ig.effects';
 
 describe('CreateIgEffects', () => {
-  let actions$: Observable<any>;
+  const actions$: Observable<any> = null;
   let effects: CreateIgEffects;
 
   beforeEach(() => {

@@ -1,42 +1,46 @@
-
-.create-ig-versions{
+.create-ig-versions {
   display: grid;
   align-content: center;
   justify-content: center;
 }
-
-.create-ig-layout{
+.create-ig-layout {
   display: grid;
+  height: 100%;
+  flex-direction: column;
   background-color: #f7f7f7;
   padding: 10px;
-  grid-template-areas:  'alerts'
+  grid-template-areas:
+  'title'
+  'alerts'
   'metadata'
   'messages'
   'submit';
-  overflow: scroll;
-  height: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 40px minmax(min-content,max-content)  minmax(min-content,max-content) auto 60px;
 }
-
 .metadata {
   grid-area: metadata;
   flex-direction: row;
   align-items: flex-start;
 }
-
+.title {
+  height: 40px;
+  grid-area: title;
+  flex-direction: row;
+  align-items: flex-start;
+}
 .alerts {
   grid-area: alerts;
 }
 .submit {
   grid-area: submit;
-  height: 100px;
-  display: grid;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .messages {
   grid-area: messages;
-  overflow: scroll;
-  max-height: 450px;
+  height: 100%;
+  padding: 5px;
 }
 
