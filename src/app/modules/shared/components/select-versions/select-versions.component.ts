@@ -10,7 +10,10 @@ export class SelectVersionsComponent implements OnInit {
 
   @Input()
   hl7Versions: string[];
-  @Output() selected = new EventEmitter<string>();
+
+  @Output()
+  selected = new EventEmitter<string>();
+
   selectedVersion: string;
 
   ngOnInit() {

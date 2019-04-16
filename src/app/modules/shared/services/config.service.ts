@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, mergeMap} from 'rxjs/operators';
 import {Message, MessageType} from '../../core/models/message/message.class';
-import {Config} from '../models/config.class';
+import {Hl7Config} from '../models/config.class';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +12,8 @@ export class ConfigService {
 
   constructor(private http: HttpClient) { }
 
-  getConfig(): Observable<Config> {
-    return this.http.get<Message<Config>>('api/config/').pipe(
+  getConfig(): Observable<Hl7Config> {
+    return this.http.get<Message<Hl7Config>>('api/config/').pipe(
       mergeMap((response) => {
         switch (response.status) {
           case MessageType.SUCCESS: return of(response.data);

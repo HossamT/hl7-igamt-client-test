@@ -2,9 +2,9 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, mergeMap} from 'rxjs/operators';
-import {IgCreationWrapper} from '../models/ig/IgCreation.class';
-import {MessageEventTreeNode} from '../models/messageEvent/message-event.class';
+import {MessageEventTreeNode} from '../models/message-event/message-event.class';
 import {Message, MessageType} from './../../core/models/message/message.class';
+import {IDocumentCreationWrapper} from '../models/ig/document-creation.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class IgService {
     );
   }
 
-  createIntegrationProfile(wrapper: IgCreationWrapper): Observable<Message<string>> {
+  createIntegrationProfile(wrapper: IDocumentCreationWrapper): Observable<Message<string>> {
     return this.http.post<Message<string>>('api/igdocuments/create/', wrapper).pipe(
       mergeMap((response) => {
         switch (response.status) {

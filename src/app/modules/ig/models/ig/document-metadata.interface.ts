@@ -1,8 +1,5 @@
-export class DocumentMetaData {
+export interface IDocumentMetaData {
   title: string;
-  constructor(title: string) {
-    this.title = title;
-  }
 }
 // private String title;
 //

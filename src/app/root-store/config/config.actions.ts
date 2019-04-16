@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import {Config} from '../../modules/shared/models/config.class';
+import {Hl7Config} from '../../modules/shared/models/config.class';
 
 export enum ConfigActionTypes {
   LoadConfig = '[Main Page] Load Config',
@@ -14,7 +14,7 @@ export class LoadConfig implements Action {
 
 export class LoadConfigSuccess implements Action {
   readonly type = ConfigActionTypes.LoadConfigSuccess;
-  constructor(readonly payload: Config) {
+  constructor(readonly payload: Hl7Config) {
 
   }
 }

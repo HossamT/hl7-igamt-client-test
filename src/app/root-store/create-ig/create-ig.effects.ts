@@ -5,7 +5,7 @@ import {of} from 'rxjs';
 import {catchError, flatMap, mergeMap} from 'rxjs/operators';
 import {Message, MessageType} from '../../modules/core/models/message/message.class';
 import {MessageService} from '../../modules/core/services/message.service';
-import {MessageEventTreeNode} from '../../modules/ig/models/messageEvent/message-event.class';
+import {MessageEventTreeNode} from '../../modules/ig/models/message-event/message-event.class';
 import {IgService} from '../../modules/ig/services/ig.service';
 import {TurnOffLoader, TurnOnLoader} from '../loader/loader.actions';
 import {ClearAll} from '../page-messages/page-messages.actions';
@@ -20,12 +20,9 @@ import {
 
 @Injectable()
 export class CreateIgEffects {
-  constructor(private actions$: Actions<CreateIgActions>, private igService: IgService,
-              private store: Store<any>, private message: MessageService) {
-  }
 
   @Effect()
-  LoadMessageEvents$ = this.actions$.pipe(
+  loadMessagesEvents$ = this.actions$.pipe(
     ofType(CreateIgActionTypes.LoadMessageEvents),
     mergeMap((action: LoadMessageEvents) => {
       this.store.dispatch(new TurnOnLoader({
@@ -46,9 +43,8 @@ export class CreateIgEffects {
       );
     }),
   );
-
   @Effect()
-  CreateIg$ = this.actions$.pipe(
+  createIg$ = this.actions$.pipe(
     ofType(CreateIgActionTypes.CreateIg),
     mergeMap((action: CreateIg) => {
       this.store.dispatch(new TurnOnLoader({
@@ -69,9 +65,8 @@ export class CreateIgEffects {
       );
     }),
   );
-
   @Effect()
-  CreateIgFailure = this.actions$.pipe(
+  createIgFailure = this.actions$.pipe(
     ofType(CreateIgActionTypes.LoadMessageEventsFailure),
     flatMap((action: LoadMessageEventsFailure) => {
       return [
@@ -81,4 +76,8 @@ export class CreateIgEffects {
       ];
     }),
   );
+
+  constructor(private actions$: Actions<CreateIgActions>, private igService: IgService,
+              private store: Store<any>, private message: MessageService) {
+  }
 }

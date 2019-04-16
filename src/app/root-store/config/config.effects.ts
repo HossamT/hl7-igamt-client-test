@@ -6,7 +6,7 @@ import {of} from 'rxjs';
 import {catchError, concatMap, flatMap, mergeMap} from 'rxjs/operators';
 import {Message, MessageType} from '../../modules/core/models/message/message.class';
 import {MessageService} from '../../modules/core/services/message.service';
-import {Config} from '../../modules/shared/models/config.class';
+import {Hl7Config} from '../../modules/shared/models/config.class';
 import {ConfigService} from '../../modules/shared/services/config.service';
 import {TurnOffLoader, TurnOnLoader} from '../loader/loader.actions';
 import {ClearAll} from '../page-messages/page-messages.actions';
@@ -22,7 +22,7 @@ export class ConfigEffects {
         blockUI: false,
       }));
       return this.configService.getConfig().pipe(
-        flatMap((resp: Config) => {
+        flatMap((resp: Hl7Config) => {
           return [new LoadConfigSuccess(resp),
             new ClearAll(),
             new TurnOffLoader(),

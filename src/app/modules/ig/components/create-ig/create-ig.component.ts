@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
+import {LoadConfig} from '../../../../root-store/config/config.actions';
 import * as config from '../../../../root-store/config/config.reducer';
 import {CreateIg, LoadMessageEvents} from '../../../../root-store/create-ig/create-ig.actions';
 import * as fromCreateIg from '../../../../root-store/create-ig/create-ig.reducer';
-
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {LoadConfig} from '../../../../root-store/config/config.actions';
-import {DocumentMetaData} from '../../models/ig/DocumentMetaData.class';
-import {IgCreationWrapper} from '../../models/ig/IgCreation.class';
-import {MessageEventTreeNode} from '../../models/messageEvent/message-event.class';
+import {Scope} from '../../../shared/constants/scope.enum';
+import {MessageEventTreeNode} from '../../models/message-event/message-event.class';
+import {IDocumentCreationWrapper} from '../../models/ig/document-creation.interface';
 
 @Component({
   selector: 'app-create-ig',
@@ -21,7 +20,12 @@ export class CreateIGComponent implements OnInit {
   table$: Observable<MessageEventTreeNode[]>;
   hl7Version$: Observable<string[]>;
   creationForm: FormGroup;
-  model: IgCreationWrapper = new IgCreationWrapper(new DocumentMetaData(null) , 'USER', []);
+
+  model: IDocumentCreationWrapper = {
+    metadata: {title: ''}
+    , scope: Scope.USER,
+    msgEvts: [],
+  };
 
   constructor(private store: Store<any>) {
     this.store.dispatch(new LoadConfig());
@@ -30,11 +34,11 @@ export class CreateIGComponent implements OnInit {
     this.creationForm = new FormGroup({
       title: new FormControl(this.model.metadata.title, [Validators.required] ),
     });
-
   }
 
   ngOnInit() {
   }
+
   getVersion($event: string) {
     this.store.dispatch(new LoadMessageEvents($event));
   }

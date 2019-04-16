@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import {IgCreationWrapper} from '../../modules/ig/models/ig/IgCreation.class';
-import {EventTreeData, MessageEventTreeNode} from '../../modules/ig/models/messageEvent/message-event.class';
+import {IDocumentCreationWrapper} from '../../modules/ig/models/ig/document-creation.interface';
+import {MessageEventTreeNode} from '../../modules/ig/models/message-event/message-event.class';
 
 export enum CreateIgActionTypes {
   LoadMessageEvents = '[Create IG Page] Load Message Events',
@@ -9,9 +9,6 @@ export enum CreateIgActionTypes {
   CreateIg= '[Create IG Page] Create IG',
   CreateIgSuccess= '[Create IG Page] Create IG Success',
   CreateIgFailure= '[Create IG Page] Create IG Failure',
-  SelectMessage= '[Create IG Page] select Message',
-  UnselectMessage= '[Create IG Page] unselect Message',
-
 }
 
 export class LoadMessageEvents implements Action {
@@ -33,7 +30,7 @@ export class LoadMessageEventsFailure implements Action {
 }
 export class CreateIg implements Action {
   readonly type = CreateIgActionTypes.CreateIg;
-  constructor(readonly payload: IgCreationWrapper) {
+  constructor(readonly payload: IDocumentCreationWrapper) {
   }
 }
 export class CreateIgFailure implements Action {

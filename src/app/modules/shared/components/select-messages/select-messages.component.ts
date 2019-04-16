@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Table} from 'primeng/table';
-import {EventTreeData} from '../../../ig/models/messageEvent/message-event.class';
+import {EventTreeData} from '../../../ig/models/message-event/message-event.class';
 
 @Component({
   selector: 'app-select-messages',
