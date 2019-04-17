@@ -13,7 +13,7 @@ export const initialState: IState = {
 
 export function reducer(state = initialState, action: ConfigActions): IState {
   if (action.type === ConfigActionTypes.LoadConfigSuccess) {
-      state = {...state, hl7Config: action.payload};
+      state = {...state, hl7Config: action.payload.data};
       return  state;
   } else {
     return state;

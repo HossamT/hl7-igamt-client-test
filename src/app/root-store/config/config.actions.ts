@@ -1,4 +1,6 @@
+import {HttpErrorResponse} from '@angular/common/http';
 import { Action } from '@ngrx/store';
+import {Message} from '../../modules/core/models/message/message.class';
 import {Hl7Config} from '../../modules/shared/models/config.class';
 
 export enum ConfigActionTypes {
@@ -14,14 +16,15 @@ export class LoadConfig implements Action {
 
 export class LoadConfigSuccess implements Action {
   readonly type = ConfigActionTypes.LoadConfigSuccess;
-  constructor(readonly payload: Hl7Config) {
+
+  constructor(readonly payload: Message<Hl7Config>) {
 
   }
 }
 
 export class LoadConfigFailure implements Action {
   readonly type = ConfigActionTypes.LoadConfigFailure;
-  constructor(readonly payload: string) {
+  constructor(readonly payload: HttpErrorResponse) {
   }
 }
 

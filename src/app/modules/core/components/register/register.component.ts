@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { ClearAll } from 'src/app/root-store/page-messages/page-messages.actions';
 import { RegistrationRequest } from '../../../../root-store/registration/registration.actions';
-import { RegistrationObject } from '../../models/user/registration-object.class';
+import { IRegistration } from '../../models/user/registration.class';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
     this.store.dispatch(new ClearAll());
   }
 
-  onSubmitApplication($event: RegistrationObject) {
+  onSubmitApplication($event: IRegistration) {
     this.store.dispatch(new RegistrationRequest($event));
   }
 }

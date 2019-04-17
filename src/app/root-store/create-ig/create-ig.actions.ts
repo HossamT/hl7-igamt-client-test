@@ -1,4 +1,6 @@
+import {HttpErrorResponse} from '@angular/common/http';
 import { Action } from '@ngrx/store';
+import {Message} from '../../modules/core/models/message/message.class';
 import {IDocumentCreationWrapper} from '../../modules/ig/models/ig/document-creation.interface';
 import {MessageEventTreeNode} from '../../modules/ig/models/message-event/message-event.class';
 
@@ -19,13 +21,13 @@ export class LoadMessageEvents implements Action {
 
 export class LoadMessageEventsSuccess implements Action {
   readonly type = CreateIgActionTypes.LoadMessageEventsSuccess;
-  constructor(readonly payload: MessageEventTreeNode[]) {
+  constructor(readonly payload: Message<MessageEventTreeNode[]>) {
   }
 }
 
 export class LoadMessageEventsFailure implements Action {
   readonly type = CreateIgActionTypes.LoadMessageEventsFailure;
-  constructor(readonly payload: string) {
+  constructor(readonly payload: HttpErrorResponse) {
   }
 }
 export class CreateIg implements Action {
@@ -35,12 +37,12 @@ export class CreateIg implements Action {
 }
 export class CreateIgFailure implements Action {
   readonly type = CreateIgActionTypes.CreateIgFailure;
-  constructor(readonly payload: string) {
+  constructor(readonly payload: HttpErrorResponse) {
   }
 }
 export class CreateIgSuccess implements Action {
   readonly type = CreateIgActionTypes.CreateIgSuccess;
-  constructor(readonly payload: string) {
+  constructor(readonly payload: Message<string>) {
   }
 }
 

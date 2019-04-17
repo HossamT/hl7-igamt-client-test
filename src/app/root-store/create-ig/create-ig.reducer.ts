@@ -14,7 +14,7 @@ export const initialState: IState = {
 
 export function reducer(state = initialState, action: CreateIgActions): IState {
   if (action.type === CreateIgActionTypes.LoadMessageEventsSuccess) {
-    return {... state, loadedMessageEvents: action.payload };
+    return {... state, loadedMessageEvents: action.payload.data };
   } else {
     return state;
   }

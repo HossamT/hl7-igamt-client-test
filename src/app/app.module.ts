@@ -9,7 +9,6 @@ import { ToastyModule } from 'ng2-toasty';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LayoutTestComponent } from './layout-test/layout-test.component';
 import { CoreModule } from './modules/core/core.module';
 import { reducers } from './root-store';
 import {ConfigEffects} from './root-store/config/config.effects';
@@ -17,7 +16,6 @@ import {ConfigEffects} from './root-store/config/config.effects';
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutTestComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +36,6 @@ import {ConfigEffects} from './root-store/config/config.effects';
   providers: [
   ],
   bootstrap: [AppComponent],
-  exports: [LayoutTestComponent],
+  exports: [],
 })
-export class AppModule {}
+export class AppModule { }

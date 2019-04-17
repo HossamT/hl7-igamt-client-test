@@ -50,7 +50,7 @@ body {
 .page-content {
   grid-column: page-content;
   grid-row: content-row;
-  overflow: hidden;
+  overflow: auto;
 }
 
 //-----

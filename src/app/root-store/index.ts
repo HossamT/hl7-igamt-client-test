@@ -5,14 +5,12 @@ import {
 import * as fromAuth from './authentication/authentication.reducer';
 import * as fromConfig from './config/config.reducer';
 import * as formCreateIg from './create-ig/create-ig.reducer';
-import * as fromIgList from './ig-list/ig-list.reducer';
 import * as fromLoader from './loader/loader.reducer';
 import * as fromPageMessages from './page-messages/page-messages.reducer';
 
 export interface IRouteState {
   auth: fromAuth.IState;
   loader: fromLoader.IState;
-  igList: fromIgList.IState;
   createIg: formCreateIg.IState;
   pageMessages: fromPageMessages.IState;
   config: fromConfig.IState;
@@ -22,7 +20,6 @@ export interface IRouteState {
 export const reducers: ActionReducerMap<IRouteState> = {
   auth: fromAuth.reducer,
   loader: fromLoader.reducer,
-  igList: fromIgList.reducer,
   createIg: formCreateIg.reducer,
   pageMessages: fromPageMessages.reducer,
   config: fromConfig.reducer,

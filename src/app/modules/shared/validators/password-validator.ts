@@ -1,12 +1,7 @@
-import {AbstractControl, ValidatorFn} from '@angular/forms';
+import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
 
-export function  passwordValidator(password: any): ValidatorFn {
-  return (control: AbstractControl): {[key: string]: ValidatorError} => {
-
-    return control.value !== password ? {notMatch: new ValidatorError('Password Does not match')} : null;
+export function passwordValidator(formGroup: FormGroup): ValidatorFn {
+  return (control: AbstractControl): { notMatch: string } => {
+    return control.value !== formGroup.get('password').value ? { notMatch: 'Confirmation does not match password' } : null;
   };
-}
-export class ValidatorError {
-  constructor(readonly message: string) {
-  }
 }

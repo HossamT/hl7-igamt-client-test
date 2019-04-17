@@ -1,5 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reset-password-request-form',
@@ -7,21 +7,20 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./reset-password-request-form.component.css'],
 })
 export class ResetPasswordRequestFormComponent implements OnInit {
-  email: string;
   resetForm: FormGroup;
   @Output() submitEvent = new EventEmitter<string>();
 
   constructor() {
     this.resetForm = new FormGroup({
-      email: new FormControl(this.email, [Validators.email, Validators.required]),
+      email: new FormControl('', [Validators.email, Validators.required]),
     });
+  }
+
+  submit() {
+    this.submitEvent.emit(this.resetForm.getRawValue().email);
   }
 
   ngOnInit() {
 
   }
-  submit() {
-    this.submitEvent.emit(this.email);
-  }
-
 }

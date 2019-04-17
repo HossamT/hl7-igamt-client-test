@@ -1,16 +1,15 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import {EMPTY, of, throwError} from 'rxjs';
-import {_throw} from 'rxjs-compat/observable/throw';
-import { catchError, concatMap, flatMap, map, mergeMap, tap } from 'rxjs/operators';
-import { Message, MessageType } from 'src/app/modules/core/models/message/message.class';
-import { MessageService } from 'src/app/modules/core/services/message.service';
-import {LoadConfig} from '../config/config.actions';
-import { TurnOffLoader, TurnOnLoader } from '../loader/loader.actions';
+import { of } from 'rxjs';
+import { _throw } from 'rxjs-compat/observable/throw';
+import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
+import { Message } from 'src/app/modules/core/models/message/message.class';
+import { RxjsStoreHelperService } from 'src/app/modules/shared/services/rxjs-store-helper.service';
+import { TurnOnLoader } from '../loader/loader.actions';
 import { User } from './../../modules/core/models/user/user.class';
 import { AuthenticationService } from './../../modules/core/services/authentication.service';
-import { ClearAll } from './../page-messages/page-messages.actions';
 import {
   AuthenticationActions,
   AuthenticationActionTypes,
@@ -30,6 +29,13 @@ import {
 @Injectable()
 export class AuthenticationEffects {
 
+  constructor(
+    private actions$: Actions<AuthenticationActions>,
+    private store: Store<any>,
+    private authService: AuthenticationService,
+    private helper: RxjsStoreHelperService,
+  ) { }
+
   // Triggered when a login attempt is made
   @Effect()
   login$ = this.actions$.pipe(
@@ -39,11 +45,11 @@ export class AuthenticationEffects {
         blockUI: false,
       }));
       return this.authService.login(action.payload.username, action.payload.password).pipe(
-        map((user: User) => {
-          return new LoginSuccess(user);
+        map((message: Message<User>) => {
+          return new LoginSuccess(message.data);
         }),
-        catchError((error: string) => {
-          return of(new LoginFailure([error]));
+        catchError((error: HttpErrorResponse) => {
+          return of(new LoginFailure(error));
         }),
       );
     }),
@@ -56,17 +62,15 @@ export class AuthenticationEffects {
     mergeMap((action: BootstrapCheckAuthStatus) => {
       return this.authService.checkAuthStatus();
     }),
-    flatMap((user: User) => {
-      return [new UpdateAuthStatus({
-        errors: [],
-        status: true,
+    map((user: User) => {
+      return new UpdateAuthStatus({
+        isLoggedIn: true,
         userInfo: user,
-      })];
+      });
     }),
     catchError((error: string) => {
       return of(new UpdateAuthStatus({
-        errors: [],
-        status: false,
+        isLoggedIn: false,
         userInfo: null,
       }));
     }),
@@ -91,47 +95,12 @@ export class AuthenticationEffects {
     map(() =>
       new UpdateAuthStatus({
         userInfo: null,
-        status: false,
-        errors: [],
+        isLoggedIn: false,
       }),
     ),
   );
 
-  // Triggered when a login attempt is successful
-  @Effect()
-  updateStatusSuccess$ = this.actions$.pipe(
-    ofType(AuthenticationActionTypes.LoginSuccess),
-    flatMap((action: LoginSuccess) => {
-      return [
-        new UpdateAuthStatus({
-          userInfo: action.payload,
-          status: true,
-          errors: [],
-        }),
-        new ClearAll(),
-        new TurnOffLoader(),
-      ];
-    }),
-  );
-
-  // Triggered when a login attempt has failed
-  @Effect()
-  updateStatusFailure$ = this.actions$.pipe(
-    ofType(AuthenticationActionTypes.LoginFailure),
-    flatMap((action: LoginFailure) => {
-      return [
-        new UpdateAuthStatus({
-          userInfo: null,
-          status: false,
-          errors: [...action.errors],
-        }),
-        new ClearAll(),
-        new TurnOffLoader(),
-        ...action.errors
-          .map((error) => this.message.messageToAction(new Message(MessageType.FAILED, error, null))),
-      ];
-    }),
-  );
+  // Triggered when a reset password request is made
   @Effect()
   resetPasswordRequest$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.ResetPasswordRequest),
@@ -140,85 +109,124 @@ export class AuthenticationEffects {
         blockUI: true,
       }));
       return this.authService.requestChangePassword(action.payload).pipe(
-        map((message: string) => {
-          return new ResetPasswordRequestSuccess(message);
+        map((response: Message<string>) => {
+          return new ResetPasswordRequestSuccess(response);
         }),
-        catchError((error: string) => {
+        catchError((error: HttpErrorResponse) => {
           return of(new ResetPasswordRequestFailure(error));
         }),
       );
     }),
   );
 
+  // Triggered when a update password request is made
   @Effect()
-  resetPasswordRequestFailure$ = this.actions$.pipe(
-    ofType(AuthenticationActionTypes.ResetPasswordRequestFailure),
-    flatMap((action: ResetPasswordRequestFailure) => {
-      return [
-        new ClearAll(),
-        new TurnOffLoader(),
-        this.message.messageToAction(new Message(MessageType.FAILED, action.payload, action.payload)),
-      ];
-    }),
-  );
-  @Effect()
-  resetPasswordRequestSuccess$ = this.actions$.pipe(
-    ofType(AuthenticationActionTypes.ResetPasswordRequestSuccess),
-    flatMap((action: ResetPasswordRequestSuccess) => {
-      return [
-        new ClearAll(),
-        new TurnOffLoader(),
-        this.message.messageToAction(new Message(MessageType.SUCCESS, action.payload, action.payload)),
-      ];
-    }),
-  );
-
-  @Effect()
-  updatePassword$ = this.actions$.pipe(
+  updatePasswordRequest$ = this.actions$.pipe(
     ofType(AuthenticationActionTypes.UpdatePasswordRequest),
     concatMap((action: UpdatePasswordRequest) => {
       this.store.dispatch(new TurnOnLoader({
         blockUI: true,
       }));
-      return this.authService.updatePassword(action.payload.token , action.payload.password).pipe(
-        map((message: string) => {
-          return new UpdatePasswordRequestSuccess(message);
+      return this.authService.updatePassword(action.payload.token, action.payload.password).pipe(
+        map((response: Message<string>) => {
+          return new UpdatePasswordRequestSuccess(response);
         }),
-        catchError((error: string) => {
+        catchError((error: HttpErrorResponse) => {
           return of(new UpdatePasswordRequestFailure(error));
         }),
       );
     }),
   );
 
+  // ---------------- LOGIN SUCCESS/FAILURE ----------------
+
   @Effect()
-  updatePasswordRequestFailure$ = this.actions$.pipe(
-    ofType(AuthenticationActionTypes.UpdatePasswordRequestFailure),
-    flatMap((action: UpdatePasswordRequestFailure) => {
-      return [
-        new ClearAll(),
-        new TurnOffLoader(),
-        this.message.messageToAction(new Message(MessageType.FAILED, action.payload, action.payload)),
-      ];
-    }),
-  );
-  @Effect()
-  updatePasswordRequestSuccess$ = this.actions$.pipe(
-    ofType(AuthenticationActionTypes.UpdatePasswordRequestSuccess),
-    flatMap((action: UpdatePasswordRequestSuccess) => {
-      return [
-        new ClearAll(),
-        new TurnOffLoader(),
-        this.message.messageToAction(new Message(MessageType.SUCCESS, action.payload, action.payload)),
-      ];
+  loginSuccess$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.LoginSuccess),
+    this.helper.finalize<LoginSuccess>({
+      clearMessages: true,
+      turnOffLoader: true,
+      handler: (action: LoginSuccess) => {
+        return [
+          new UpdateAuthStatus({
+            userInfo: action.payload,
+            isLoggedIn: true,
+          }),
+        ];
+      },
     }),
   );
 
-  constructor(
-    private actions$: Actions<AuthenticationActions>,
-    private store: Store<any>,
-    private authService: AuthenticationService,
-    private message: MessageService,
-  ) { }
+  @Effect()
+  loginFailure$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.LoginFailure),
+    this.helper.finalize<LoginFailure, HttpErrorResponse>({
+      clearMessages: true,
+      turnOffLoader: true,
+      handler: (action: LoginFailure) => {
+        return [
+          new UpdateAuthStatus({
+            userInfo: null,
+            isLoggedIn: false,
+          }),
+        ];
+      },
+      message: (action: LoginFailure) => {
+        return action.error;
+      },
+    }),
+  );
+
+  // ---------------- UPDATE PASSWORD SUCCESS/FAILURE ----------------
+
+  @Effect()
+  updatePasswordRequestFailure$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.UpdatePasswordRequestFailure),
+    this.helper.finalize<UpdatePasswordRequestFailure, HttpErrorResponse>({
+      clearMessages: true,
+      turnOffLoader: true,
+      message: (action: UpdatePasswordRequestFailure): HttpErrorResponse => {
+        return action.payload;
+      },
+    }),
+  );
+
+  @Effect()
+  updatePasswordRequestSuccess$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.UpdatePasswordRequestSuccess),
+    this.helper.finalize<UpdatePasswordRequestSuccess, Message>({
+      clearMessages: true,
+      turnOffLoader: true,
+      message: (action: UpdatePasswordRequestSuccess): Message => {
+        return action.payload;
+      },
+    }),
+  );
+
+  // ---------------- RESET PASSWORD SUCCESS/FAILURE ----------------
+
+  @Effect()
+  resetPasswordRequestFailure$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.ResetPasswordRequestFailure),
+    this.helper.finalize<ResetPasswordRequestFailure, HttpErrorResponse>({
+      clearMessages: true,
+      turnOffLoader: true,
+      message: (action: ResetPasswordRequestFailure): HttpErrorResponse => {
+        return action.payload;
+      },
+    }),
+  );
+
+  @Effect()
+  resetPasswordRequestSuccess$ = this.actions$.pipe(
+    ofType(AuthenticationActionTypes.ResetPasswordRequestSuccess),
+    this.helper.finalize<ResetPasswordRequestSuccess, Message>({
+      clearMessages: true,
+      turnOffLoader: true,
+      message: (action: ResetPasswordRequestSuccess): Message => {
+        return action.payload;
+      },
+    }),
+  );
 
 }

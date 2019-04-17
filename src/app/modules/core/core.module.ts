@@ -19,8 +19,9 @@ import { NewPasswordComponent } from './components/new-password/new-password.com
 import { RegisterComponent } from './components/register/register.component';
 import { ResetPasswordRequestComponent } from './components/reset-password-request/reset-password-request.component';
 import { UserManagementHeaderComponent } from './components/user-management-header/user-management-header.component';
-import {NewPasswordResolver} from './resolvers/new-password.resolver';
+import { NewPasswordResolver } from './resolvers/new-password.resolver';
 import { AuthenticatedGuard, NotAuthenticatedGuard } from './services/auth-guard.guard';
+
 @NgModule({
   declarations: [
     HeaderComponent,

@@ -1,8 +1,8 @@
-import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from '@angular/core';
-import {AbstractControl, ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { AbstractControl, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector: 'form-input',
+  selector: 'app-form-input',
   templateUrl: './form-input.component.html',
   styleUrls: ['./form-input.component.css'],
   providers: [
@@ -14,73 +14,53 @@ import {AbstractControl, ControlContainer, ControlValueAccessor, FormControl, NG
   ],
 })
 export class FormInputComponent implements ControlValueAccessor, OnInit {
-  @Output() _valueChange: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor( private controlContainer: ControlContainer) { }
-
-  set value(val) {
-    this._value = val;
-    this.onChange(val);
-    this.onTouched();
-    this._valueChange.emit(this._value);
-  }
-
-  get value() {
-    return this._value;
-  }
+  @Output()
+  change: EventEmitter<any>;
   @Input()
   type: string;
   @Input()
   name: string;
   @Input()
-  id: string;
-  @Input()
-  _value: any;
-  @Input()
   formControlName: string;
+  @Input()
+  value: string;
+  @Input()
+  id: string;
   @Input()
   required: boolean;
   @Input()
   label: string;
   @Input()
   placeholder: any;
-
+  disabled: boolean;
   control: AbstractControl;
   onChange: any = () => { };
-  onTouched: any = () => { };
+  onTouch: any = () => { };
 
-  ngOnInit() {
-
-    if (this.controlContainer) {
-      if (this.formControlName) {
-        this.control = this.controlContainer.control.get(this.formControlName);
-        console.log(this.control);
-      } else {
-        console.warn('Missing FormControlName directive from host element of the component');
-      }
-    } else {
-      console.warn('Can\'t find parent FormGroup directive');
-    }
-
+  constructor(private controlContainer: ControlContainer) {
+    this.change = new EventEmitter<any>();
   }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
-
   }
 
   registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-
+    this.onTouch = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
-  writeValue(obj: any): void {
-    if (obj) {
-      this.value = obj;
-    }
+  writeValue(val: any): void {
+    this.value = val;
+  }
+
+  valueChange(value: any) {
+    this.onChange(value);
+    this.change.emit(value);
   }
 
   convertErrors(): string[] {
@@ -90,11 +70,11 @@ export class FormInputComponent implements ControlValueAccessor, OnInit {
         errors.push(this.name + ' is required');
         break;
       } else if (property === 'minlength') {
-        errors.push(this.name + ' is too short' );
+        errors.push(this.name + ' is too short');
         break;
 
       } else if (property === 'maxlength') {
-        errors.push(this.name + ' is too long' );
+        errors.push(this.name + ' is too long');
         break;
 
       } else if (property === 'email') {
@@ -106,10 +86,19 @@ export class FormInputComponent implements ControlValueAccessor, OnInit {
         break;
       }
     }
+    console.log(errors);
     return errors;
   }
 
-  update($event: any) {
-    this._valueChange.emit(this.value);
+  ngOnInit() {
+    if (this.controlContainer) {
+      if (this.formControlName) {
+        this.control = this.controlContainer.control.get(this.formControlName);
+      } else {
+        console.warn('Missing FormControlName directive from host element of the component');
+      }
+    } else {
+      console.warn('Can\'t find parent FormGroup directive');
+    }
   }
 }

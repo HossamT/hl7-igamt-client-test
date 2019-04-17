@@ -1,16 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import * as fromAuth from 'src/app/root-store/authentication/authentication.reducer';
-import { SelectIgListViewType } from 'src/app/root-store/ig-list/ig-list.actions';
-import * as fromIgList from 'src/app/root-store/ig-list/ig-list.reducer';
+import {
+  DeleteIgListItemRequest,
+  IgListLoad,
+  LoadIgList,
+  SelectIgListSortOption,
+  SelectIgListViewType,
+} from 'src/app/root-store/ig/ig-list/ig-list.actions';
+import * as fromIgList from 'src/app/root-store/ig/ig-list/ig-list.index';
 import * as fromRoot from 'src/app/root-store/index';
 import { IgListItem } from '../../models/ig/ig-list-item.class';
 import { IgService } from '../../services/ig.service';
-import { DeleteIgListItemRequest, IgListLoad, LoadIgList, SelectIgListSortOption } from './../../../../root-store/ig-list/ig-list.actions';
 import { Message } from './../../../core/models/message/message.class';
 import { MessageService } from './../../../core/services/message.service';
 import { ConfirmDialogComponent } from './../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -42,6 +47,7 @@ export class IgListContainerComponent implements OnInit {
     private store: Store<fromRoot.IRouteState>,
     private route: ActivatedRoute,
     private dialog: MatDialog,
+    private router: Router,
     private message: MessageService,
     private ig: IgService) {
 
@@ -146,7 +152,7 @@ export class IgListContainerComponent implements OnInit {
                 class: 'btn-primary',
                 icon: 'fa-arrow-right',
                 action: (item: IgListItem) => {
-
+                  this.router.navigate(['ig', item.id, 'edit']);
                 },
                 disabled: (item: IgListItem): boolean => {
                   return false;

@@ -6,13 +6,11 @@ import { IState } from './authentication.reducer';
 export interface IState {
   isLoggedIn: boolean;
   userInfo: User;
-  errors: string[];
 }
 
 export const initialState: IState = {
   isLoggedIn: false,
   userInfo: null,
-  errors: [],
 };
 
 export function reducer(state = initialState, action: AuthenticationActions): IState {
@@ -21,8 +19,7 @@ export function reducer(state = initialState, action: AuthenticationActions): IS
 
     case AuthenticationActionTypes.UpdateAuthStatus:
       return {
-        errors: action.payload.errors,
-        isLoggedIn: action.payload.status,
+        isLoggedIn: action.payload.isLoggedIn,
         userInfo: action.payload.userInfo,
       };
 
@@ -70,16 +67,5 @@ export const selectIsAdmin = createSelector(
   selectAuthorities,
   (authorities: string[]) => {
     return authorities.indexOf('ADMIN') !== -1;
-  },
-);
-
-export const selectAuthErrorList = createSelector(
-  selectAuth,
-  (state: IState) => {
-    if (state.isLoggedIn) {
-      return [];
-    } else {
-      return state.errors;
-    }
   },
 );

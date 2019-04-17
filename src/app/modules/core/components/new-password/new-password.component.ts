@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Store} from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import {
   UpdatePasswordRequest,
 } from '../../../../root-store/authentication/authentication.actions';
@@ -8,7 +8,7 @@ import {
 @Component({
   selector: 'app-new-password',
   templateUrl: './new-password.component.html',
-  styleUrls: ['./new-password.component.css'],
+  styleUrls: ['./new-password.component.scss'],
 })
 export class NewPasswordComponent implements OnInit {
 
@@ -19,6 +19,6 @@ export class NewPasswordComponent implements OnInit {
   }
 
   onSubmitApplication($event: string) {
-    this.store.dispatch(new UpdatePasswordRequest({token: this.route.snapshot.params['token'], password: $event }));
+    this.store.dispatch(new UpdatePasswordRequest({ token: this.route.snapshot.params['token'], password: $event }));
   }
 }

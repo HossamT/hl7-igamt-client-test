@@ -16,38 +16,15 @@ export class IgService {
   cloneIg(id: string): Observable<Message<string>> {
     return this.http.get<Message<string>>('/api/igdocuments/' + id + '/clone').pipe();
   }
-
-  getMessagesByVersion(hl7Version: string): Observable<MessageEventTreeNode[]> {
-
-    return this.http.get<Message<MessageEventTreeNode[]>>('api/igdocuments/findMessageEvents/' + hl7Version).pipe(
-      mergeMap((response) => {
-          switch (response.status) {
-            case MessageType.SUCCESS: return of(response.data);
-            case MessageType.FAILED : return throwError(response.text);
-            default: return throwError(' Unexpected error happened');
-          }
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const errorMessage = err.error ? err.error.text ? err.error.text : err.message : err.message;
-        return throwError(errorMessage);
-      }),
-    );
+  getMessagesByVersion(hl7Version: string): Observable<Message<MessageEventTreeNode[]>> {
+    return this.http.get<Message<MessageEventTreeNode[]>>('api/igdocuments/findMessageEvents/' + hl7Version);
   }
 
   createIntegrationProfile(wrapper: IDocumentCreationWrapper): Observable<Message<string>> {
-    return this.http.post<Message<string>>('api/igdocuments/create/', wrapper).pipe(
-      mergeMap((response) => {
-        switch (response.status) {
-          case MessageType.SUCCESS: return of(response);
-          case MessageType.FAILED : return throwError(response.text);
-          default: return throwError(' Unexpected error happened');
-        }
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const errorMessage = err.error ? err.error.text ? err.error.text : err.message : err.message;
-        return throwError(errorMessage);
-      }),
-    );
+    return this.http.post<Message<string>>('api/igdocuments/create/', wrapper);
   }
 
+  getIg(id: string): Observable<IgDocument> {
+    return this.http.get<any>('/api/igdocuments/' + id);
+  }
 }

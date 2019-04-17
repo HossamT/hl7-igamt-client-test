@@ -1,14 +1,14 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Store} from '@ngrx/store';
-import {of} from 'rxjs';
-import {catchError, concatMap, flatMap, map} from 'rxjs/operators';
-import {Message, MessageType} from '../../modules/core/models/message/message.class';
-import {AuthenticationResponse, AuthenticationService} from '../../modules/core/services/authentication.service';
-import {MessageService} from '../../modules/core/services/message.service';
-import {RegistrationService} from '../../modules/core/services/registration.service';
-import {ClearAll} from '../../root-store/page-messages/page-messages.actions';
-import {TurnOffLoader, TurnOnLoader} from '../loader/loader.actions';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
+import { catchError, concatMap, map } from 'rxjs/operators';
+import { User } from 'src/app/modules/core/models/user/user.class';
+import { RxjsStoreHelperService } from 'src/app/modules/shared/services/rxjs-store-helper.service';
+import { Message } from '../../modules/core/models/message/message.class';
+import { RegistrationService } from '../../modules/core/services/registration.service';
+import { TurnOnLoader } from '../loader/loader.actions';
 import {
   RegistrationActionTypes,
   RegistrationFailure,
@@ -19,11 +19,13 @@ import {
 @Injectable()
 export class RegistrationEffects {
 
-  constructor(private actions$: Actions, private registrationService: RegistrationService,   private store: Store<any>,
-              private authService: AuthenticationService,
-              private message: MessageService) {
+  constructor(
+    private actions$: Actions,
+    private registrationService: RegistrationService,
+    private store: Store<any>,
+    private helper: RxjsStoreHelperService,
+  ) { }
 
-  }
   @Effect()
   registration$ = this.actions$.pipe(
     ofType(RegistrationActionTypes.RegistrationRequest),
@@ -32,10 +34,10 @@ export class RegistrationEffects {
         blockUI: false,
       }));
       return this.registrationService.register(action.payload).pipe(
-        map((userResponse: AuthenticationResponse) => {
-          return new RegistrationSuccess(userResponse);
+        map((response: Message<User>) => {
+          return new RegistrationSuccess(response);
         }),
-        catchError((error: string) => {
+        catchError((error: HttpErrorResponse) => {
           return of(new RegistrationFailure(error));
         }),
       );
@@ -45,24 +47,24 @@ export class RegistrationEffects {
   @Effect()
   registrationSuccess$ = this.actions$.pipe(
     ofType(RegistrationActionTypes.RegistrationSuccess),
-    flatMap( (action: RegistrationSuccess) => {
-      return [
-        new ClearAll(),
-        new TurnOffLoader(),
-        this.message.messageToAction(new Message(MessageType.SUCCESS, action.payload.text, action.payload.data)),
-      ];
+    this.helper.finalize<RegistrationSuccess, Message>({
+      clearMessages: true,
+      turnOffLoader: true,
+      message: (action: RegistrationSuccess): Message => {
+        return action.payload;
+      },
     }),
   );
 
   @Effect()
   registrationFailure$ = this.actions$.pipe(
     ofType(RegistrationActionTypes.RegistrationFailure),
-    flatMap( (action: RegistrationFailure) => {
-      return [
-        new ClearAll(),
-        new TurnOffLoader(),
-        this.message.messageToAction(new Message(MessageType.FAILED, action.payload, null)),
-    ];
+    this.helper.finalize<RegistrationFailure, HttpErrorResponse>({
+      clearMessages: true,
+      turnOffLoader: true,
+      message: (action: RegistrationFailure): HttpErrorResponse => {
+        return action.payload;
+      },
     }),
   );
 }

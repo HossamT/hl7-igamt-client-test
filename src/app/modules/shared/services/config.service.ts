@@ -12,19 +12,7 @@ export class ConfigService {
 
   constructor(private http: HttpClient) { }
 
-  getConfig(): Observable<Hl7Config> {
-    return this.http.get<Message<Hl7Config>>('api/config/').pipe(
-      mergeMap((response) => {
-        switch (response.status) {
-          case MessageType.SUCCESS: return of(response.data);
-          case MessageType.FAILED : return throwError(response.text);
-          default: return throwError(' Unexpected error happened');
-        }
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const errorMessage = err.error ? err.error.text ? err.error.text : err.message : err.message;
-        return throwError(errorMessage);
-      }),
-    );
+  getConfig(): Observable<Message<Hl7Config>> {
+    return this.http.get<Message<Hl7Config>>('api/config/');
   }
 }
