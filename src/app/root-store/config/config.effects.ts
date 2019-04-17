@@ -1,16 +1,15 @@
+import {HttpErrorResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-
-import {HttpErrorResponse} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 import {of} from 'rxjs';
-import {catchError, concatMap, flatMap, map, mergeMap} from 'rxjs/operators';
-import {Message, MessageType} from '../../modules/core/models/message/message.class';
+import {catchError, concatMap, map} from 'rxjs/operators';
+import {Message} from '../../modules/core/models/message/message.class';
 import {MessageService} from '../../modules/core/services/message.service';
 import {Hl7Config} from '../../modules/shared/models/config.class';
 import {ConfigService} from '../../modules/shared/services/config.service';
 import {RxjsStoreHelperService} from '../../modules/shared/services/rxjs-store-helper.service';
-import {TurnOffLoader, TurnOnLoader} from '../loader/loader.actions';
+import {TurnOnLoader} from '../loader/loader.actions';
 import {ConfigActions, ConfigActionTypes, LoadConfig, LoadConfigFailure, LoadConfigSuccess} from './config.actions';
 
 @Injectable()
@@ -51,9 +50,6 @@ export class ConfigEffects {
     this.helper.finalize<LoadConfigSuccess, Message<Hl7Config>>({
       clearMessages: true,
       turnOffLoader: true,
-      message: (action: LoadConfigSuccess) => {
-        return action.payload;
-      },
     }),
   );
 
